@@ -15,7 +15,7 @@ RFLAGS = -O3 -mtune=native
 
 INC_PATH = lib
 SRC_PATH = src
-BIN_PATH = bin
+BIN_PATH = bin/obj
 DEP_PATH = dep
 
 CPP_FILES = $(wildcard $(SRC_PATH)/*.cpp)
@@ -37,7 +37,10 @@ SDL_PATHS = sdl
 
 SDL_INC_PATH += $(addsuffix /include,$(SDL_PATHS))
 LINK_PATH = $(addprefix -L,$(addsuffix /lib,$(SDL_PATHS)))
-FLAGS += -mwindows
+
+#remove comment to disable prompt feedback
+#FLAGS += -mwindows
+
 DFLAGS += -mconsole
 LIBS := -lmingw32 -lSDL2main $(LIBS)
 
