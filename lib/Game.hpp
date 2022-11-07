@@ -1,48 +1,53 @@
 #ifndef FOG_GAME
 #define FOG_GAME
 
+//C++ Libs
+#include <iostream>
 #include <string>
-#include "../lib/Xrand.hpp"
-#include "../sdl/include/SDL2/SDL.h"
-#include "../sdl/include/SDL2/SDL_mixer.h"
-#include "../sdl/include/SDL2/SDL_image.h"
-#include "../sdl/include/SDL2/SDL_ttf.h"
 
+//Local libs
+#include "../lib/Xrand.hpp"
+#include "../lib/State.hpp"
+
+//SDL Libs
+#define SDL_BASE
+#define SDL_IMAGE
+#define SDL_MIXER
+#define SDL_TTF
+#include "../lib/IncludeSDL.hpp"
+
+
+void Error(std::string);
 
 class Game
 {
-    public:
-        Game();
+    private:
+        //Name and size
+        int _GameWidth;
+        int _GameHeight;
+        std::string _GameTitle;
+        //internal procedures
+        void _GameInitSystems();
+        
+        //Mandatory
         Game(std::string, int, int);
+        static Game* _GameInstance;
+        SDL_Window* _GameWindow = nullptr;
+        SDL_Renderer* _GameRenderer = nullptr;
+        State* _GameState = nullptr;
+
+    public:              
+        Game(const Game&) = delete;
         ~Game();
         void Run();
-        
-    private:
-        int WindowWidth, WindowHeight;
-        std::string WindowTitle;
-                    
+        SDL_Renderer* GetRenderer();
+        State& GetState();
+        static Game& GetInstance();
+
     protected:
 
 };
 
-Game::Game(std::string Name, int Width, int Height)
-{
-    
-}
 
-Game::Game()
-{
-
-}
-
-Game::~Game()
-{
-
-}
-
-void Game::Run()
-{
-
-}
 
 #endif//FOG_GAME
