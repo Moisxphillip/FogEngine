@@ -4,7 +4,7 @@
 #define SDL_BASE
 #define SDL_MIXER
 #include "../lib/IncludeSDL.hpp"
-#include <string>
+#include "../lib/Tools.hpp"
 
 class Music
 {
@@ -14,6 +14,7 @@ class Music
     public:
         Music();
         Music(std::string);
+        ~Music();
         void Play(int);
         void Stop(int);
         void Open(std::string);

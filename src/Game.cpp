@@ -1,12 +1,7 @@
 #include "../lib/Game.hpp"
 
+//Set value for singleton class
 Game* Game::_GameInstance = nullptr;
-
-void Error(std::string Info)
-{
-    std::cout << "Error! " << Info << ".\n";
-    std::cout << SDL_GetError() << ".\n";
-}
 
 void Game::_GameInitSystems()
 {
@@ -36,15 +31,6 @@ void Game::_GameInitSystems()
     }
     
     Mix_AllocateChannels(32); //Channel allocation for different audio tracks
-
-
-    //TODO refactor and place on the appropriate place
-    _GameWindow = SDL_CreateWindow(_GameTitle.c_str(), SDL_WINDOWPOS_CENTERED, 
-    SDL_WINDOWPOS_CENTERED, _GameWidth, _GameHeight, SDL_WINDOW_SHOWN);
-    if(_GameWindow == nullptr)
-    {
-        Error("Window could not be created");   
-    }
 }
 
 Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
@@ -53,7 +39,6 @@ Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
     _GameTitle = Name;
     _GameWidth = Width;
     _GameHeight = Height;
-
     //Check if there is another instance working already
     if(_GameInstance != nullptr)
     {
@@ -61,23 +46,53 @@ Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
     }
 
     _GameInitSystems();
+    _GameState = new State;
 
 }
 
 Game::~Game()
 {
-    //Free resources
-    SDL_DestroyWindow(_GameWindow);
-
     //Quit SDL subsystems
-    SDL_Quit();
-    IMG_Quit();
+    Mix_CloseAudio();
     Mix_Quit();
+    IMG_Quit();
+    SDL_DestroyRenderer(_GameRenderer);
+    SDL_DestroyWindow(_GameWindow);
+    SDL_Quit();
+    
+    //Free resources
+    delete _GameState;
     delete _GameInstance;
+
 }
 
 void Game::Run()
 {
+    //TODO refactor and place on the appropriate place
+    _GameWindow = SDL_CreateWindow(_GameTitle.c_str(), SDL_WINDOWPOS_CENTERED, 
+    SDL_WINDOWPOS_CENTERED, _GameWidth, _GameHeight, SDL_WINDOW_SHOWN);
+    if(_GameWindow == nullptr)
+    {
+        Error("Window could not be created");   
+    }
+
+    //Create Renderer
+    //-1 allows SDL to choose the most appropriate render drive
+    _GameRenderer = SDL_CreateRenderer(_GameWindow, -1, SDL_RENDERER_ACCELERATED);
+    if(_GameRenderer == nullptr)
+    {
+        Error("Renderer could not be created");   
+    }
+
+    while(!_GameState->QuitRequested())
+    {
+        _GameState->Update(0);
+        _GameState->Render();
+        SDL_RenderPresent(_GameRenderer);
+        SDL_Delay(Fps(30));
+    }
+
+    /*
     SDL_Surface* _GameSurface;
     _GameSurface = SDL_GetWindowSurface(_GameWindow);
     //Fill the surface white
@@ -85,7 +100,7 @@ void Game::Run()
     //Update the surface
     SDL_UpdateWindowSurface(_GameWindow);
     //a hack to get window to stay up
-    SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
+    SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }*/
 }
 
 SDL_Renderer* Game::GetRenderer()

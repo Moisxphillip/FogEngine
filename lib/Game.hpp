@@ -6,8 +6,10 @@
 #include <string>
 
 //Local libs
+#include "../lib/Tools.hpp"
 #include "../lib/Xrand.hpp"
 #include "../lib/State.hpp"
+
 
 //SDL Libs
 #define SDL_BASE
@@ -17,7 +19,7 @@
 #include "../lib/IncludeSDL.hpp"
 
 
-void Error(std::string);
+
 
 class Game
 {

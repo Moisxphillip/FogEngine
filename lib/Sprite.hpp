@@ -1,15 +1,17 @@
 #ifndef FOG_SPRITE
 #define FOG_SPRITE
 
+#include <string>
+
 #define SDL_BASE
 #define SDL_IMAGE
 #include "../lib/IncludeSDL.hpp"
-#include <string>
+#include "../lib/Tools.hpp"
 
 class Sprite
 {
     private:
-        SDL_Texture* _Sprite_Texture;
+        SDL_Texture* _SpriteTexture;
         int _SpriteWidth;
         int _SpriteHeight;
         SDL_Rect _ClipRect;
