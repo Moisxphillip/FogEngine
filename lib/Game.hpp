@@ -18,9 +18,6 @@
 #define SDL_TTF
 #include "../lib/IncludeSDL.hpp"
 
-
-
-
 class Game
 {
     private:
@@ -28,8 +25,10 @@ class Game
         int _GameWidth;
         int _GameHeight;
         std::string _GameTitle;
+        int _MixChannels;
+        
         //internal procedures
-        void _GameInitSystems();
+        void _GameInitSDL();
         
         //Mandatory
         Game(std::string, int, int);
@@ -38,8 +37,12 @@ class Game
         SDL_Renderer* _GameRenderer = nullptr;
         State* _GameState = nullptr;
 
-    public:              
+    public:
+        //Copy prevention
         Game(const Game&) = delete;
+        void operator=(Game &game)= delete;
+
+        //Mandatory
         ~Game();
         void Run();
         SDL_Renderer* GetRenderer();

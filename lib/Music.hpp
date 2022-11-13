@@ -15,7 +15,8 @@ class Music
         Music();
         Music(std::string);
         ~Music();
-        void Play(int);
+        
+        void Play(int, int);
         void Stop(int);
         void Open(std::string);
         bool IsOpen();

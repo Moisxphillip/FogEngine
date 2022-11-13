@@ -1,5 +1,19 @@
+#Files
 test.cpp
-/bin
-/dep
+make.ps1
+Make
+sdl2-config
+
+#Extensions
+*.exe
+*.o
+*.d
+*.dll
+
+#Folders
 /sdl
 /.vscode
+
+#Substitution Audio Files
+dirt.ogg
+greenpath.ogg

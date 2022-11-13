@@ -1,4 +1,4 @@
-COMPILER = tg++
+COMPILER = g++ 
 RMDIR = rm -rdf
 RM = rm -f
 
@@ -7,7 +7,7 @@ LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 
 INC_PATHS = -I$(INC_PATH) $(addprefix -I,$(SDL_INC_PATH))
 
-FLAGS = -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self
+FLAGS = -std=c++17 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self
 
 DFLAGS = -ggdb -O0 -DDEBUG
 
@@ -15,7 +15,7 @@ RFLAGS = -O3 -mtune=native
 
 INC_PATH = lib
 SRC_PATH = src
-BIN_PATH = bin/obj
+BIN_PATH = bin
 DEP_PATH = dep
 
 CPP_FILES = $(wildcard $(SRC_PATH)/*.cpp)
@@ -31,15 +31,15 @@ ifeq ($(OS),Windows_NT)
 RMDIR = rd /s /q
 RM = del /q
 
-SDL_PATHS = sdl
-#SDL_PATHS = C:/SDL2-2.0.22/i686-w64-mingw32 #casa
+#SDL_PATHS = sdl
+SDL_PATHS = C:/SDL2-2.0.22/i686-w64-mingw32 #casa
 #DL_PATHS = C:/SDL2-2.0.5/i686-w64-mingw32 #linf
 
 SDL_INC_PATH += $(addsuffix /include,$(SDL_PATHS))
 LINK_PATH = $(addprefix -L,$(addsuffix /lib,$(SDL_PATHS)))
 
-#remove comment to disable prompt feedback
-#FLAGS += -mwindows
+#comment line below to enable prompt feedback
+FLAGS += -mwindows
 
 DFLAGS += -mconsole
 LIBS := -lmingw32 -lSDL2main $(LIBS)
@@ -85,11 +85,11 @@ debug: $(EXEC)
 
 folders:
 ifeq ($(OS), Windows_NT)
-#	@if NOT exist $(DEP_PATH) (mkdir $(DEP_PATH))
-#	@if NOT exist $(BIN_PATH) (mkdir $(BIN_PATH))
-#	@if NOT exist $(INC_PATH) (mkdir $(INC_PATH))
-#	@if NOT exist $(SRC_PATH) (mkdir $(SRC_PATH))
-#else
+#	@if NOT exist $(DEP_PATH) @mkdir $(DEP_PATH)
+#	@if NOT exist $(BIN_PATH) @mkdir $(BIN_PATH)
+#	@if NOT exist $(INC_PATH) @mkdir $(INC_PATH)
+#	@if NOT exist $(SRC_PATH) @mkdir $(SRC_PATH)
+else
 #	@mkdir -p $(DEP_PATH) $(BIN_PATH) $(INC_PATH) $(SRC_PATH)
 endif
 

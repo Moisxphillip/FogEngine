@@ -20,6 +20,7 @@ class Sprite
         Sprite();
         Sprite(std::string);
         ~Sprite();
+        
         void Open(std::string);
         void SetClip(int, int, int, int);
         void Render(int, int);

@@ -20,6 +20,7 @@ Sprite::~Sprite()
     {
         SDL_DestroyTexture(_SpriteTexture);
     }
+    _SpriteTexture = nullptr;
 }
 
 void Sprite::Open(std::string File)
@@ -27,9 +28,13 @@ void Sprite::Open(std::string File)
     _SpriteTexture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), File.c_str());
     if(_SpriteTexture == nullptr)
     {
-        Error("Image could not be loaded");
+        Error("Sprite::Open: Image could not be loaded");
     }
-    SDL_QueryTexture(_SpriteTexture, nullptr, nullptr, &_SpriteWidth, &_SpriteHeight);
+    if(SDL_QueryTexture(_SpriteTexture, nullptr, nullptr, &_SpriteWidth, &_SpriteHeight))
+    {
+        Error("Sprite::Open: QueryTexture failed");
+    }
+    SetClip(0,0, _SpriteWidth, _SpriteHeight);
 }
 
 void Sprite::SetClip(int x, int y, int w, int h)
@@ -49,7 +54,7 @@ void Sprite::Render(int x, int y)
     DestinyRect.h = _ClipRect.h;
     if(SDL_RenderCopy(Game::GetInstance().GetRenderer(), _SpriteTexture, &_ClipRect, &DestinyRect))
     {
-        Error("Sprite copy to render device has failed");
+        Error("Sprite::Render: Sprite copy to render device has failed");
     }
 }
 
@@ -65,5 +70,6 @@ int Sprite::GetHeight()
 
 bool Sprite::IsOpen()
 {
+
     return (_SpriteTexture != nullptr);
 }

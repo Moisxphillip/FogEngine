@@ -19,16 +19,17 @@ Music::~Music()
 
 
 //-1 = infinite loop
-void Music::Play(int Times = -1)
+void Music::Play(int Times = -1, int FadeIn = 0)
 {
     if(_Music == nullptr)
     {
-        Error("Music asset not loaded");
+        Error("Music::Play: Music asset not loaded");
+        return;
     }
 
-    if(Mix_PlayMusic(_Music, Times))
+    if(Mix_FadeInMusic(_Music, Times, FadeIn))
     {
-        Error("Music device failed");
+        Error("Music::Play: Music device failed");
     }
 }
 
@@ -36,7 +37,7 @@ void Music::Stop(int FadeOut = 1500)
 {
     if(!Mix_FadeOutMusic(FadeOut))
     {
-        Error("Fadeout Could not be scheduled");
+        Error("Music::Stop: Fadeout Could not be scheduled");
     }
 }
 
@@ -45,7 +46,7 @@ void Music::Open(std::string Path)
     _Music = Mix_LoadMUS(Path.c_str());
     if(_Music == nullptr)
     {
-        Error("Music asset could not be loaded");
+        Error("Music::Open: Music asset could not be loaded");
     }
 }
 
