@@ -1,0 +1,5 @@
+#ifndef FOG_COMPONENT
+#define FOG_COMPONENT
+
+
+#endif//FOG_COMPONENT
