@@ -49,8 +49,6 @@ class Game
         State& GetState();
         static Game& GetInstance();
 
-    protected:
-
 };
 
 

@@ -8,8 +8,9 @@
 
 class Music
 {
-    private:
+    private:        
         Mix_Music* _Music;
+        int _MusicVolume;
 
     public:
         Music();
