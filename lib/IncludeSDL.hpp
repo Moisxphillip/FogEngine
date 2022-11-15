@@ -7,8 +7,7 @@
  * #include "SDL_include.h"
 */
 
-//Define for when the SDL resources are inside the project folder
-//#define FOG_MYMACHINE
+#include "../lib/Settings.hpp"
 
 #ifdef FOG_MYMACHINE
 	/************************************************
