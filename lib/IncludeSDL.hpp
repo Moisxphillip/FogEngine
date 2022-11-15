@@ -7,8 +7,7 @@
  * #include "SDL_include.h"
 */
 
-//The line below takes the sdl from the sdl folder inside the project folder
-#define FOG_MYMACHINE
+#include "../lib/Settings.hpp"
 
 #ifdef FOG_MYMACHINE
 	/************************************************
