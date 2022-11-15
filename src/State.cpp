@@ -8,7 +8,6 @@ State::State()
 
     LoadAssets();
     _StateMusic->Play(-1, 1000);
-    
 }
 
 State::~State()
@@ -27,7 +26,7 @@ bool State::QuitRequested()
 void State::LoadAssets()
 {
     _StateMusic = new Music(FMUS_STAGE1);
-    _StateBg = new Sprite(FIMG_OCEAN);
+    _StateBg = new Sprite(,FIMG_OCEAN);//TODO fix
 }
 
 void State::Update(float Dt)
@@ -41,5 +40,5 @@ void State::Update(float Dt)
 
 void State::Render()
 {
-    _StateBg->Render(0,0);
+    _StateBg->Render();
 }

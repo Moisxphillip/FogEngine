@@ -2,6 +2,7 @@
 #define FOG_GAMEOBJ
 
 #include "../lib/Rect.hpp"
+#include "../lib/Component.hpp"
 #include <vector>
 
 class GameObject

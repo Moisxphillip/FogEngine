@@ -1,4 +1,5 @@
 #include "../lib/Game.hpp"
+#include "../lib/Settings.hpp"
 
 //Set value for singleton class
 Game* Game::_GameInstance = nullptr;
@@ -119,7 +120,7 @@ Game& Game::GetInstance()
 {
     if(_GameInstance == nullptr)
     {
-        _GameInstance = new Game("FogEngine", 1024, 600);
+        _GameInstance = new Game(FOG_SCRTITLE, FOG_SCRWIDTH, FOG_SCRHEIGHT);
     }
     return *_GameInstance;
 }

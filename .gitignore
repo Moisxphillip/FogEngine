@@ -8,7 +8,7 @@ sdl2-config
 *.exe
 *.o
 *.d
-*.dll
+#*.dll
 
 #Folders
 /sdl

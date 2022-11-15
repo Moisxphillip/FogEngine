@@ -3,14 +3,15 @@
 //Including on the hpp results in failure, so...
 #include "../lib/Game.hpp"
 
-Sprite::Sprite()
+Sprite::Sprite(GameObject& GameObj)
+: Component(GameObj)
 {
     _SpriteTexture = nullptr;
 }
 
-Sprite::Sprite(std::string File)
+Sprite::Sprite(GameObject& GameObj, std::string File)
+: Sprite(GameObj)
 {
-    _SpriteTexture = nullptr;
     Open(File);
 }
 
@@ -45,11 +46,11 @@ void Sprite::SetClip(int x, int y, int w, int h)
     _ClipRect.h = h;
 }
 
-void Sprite::Render(int x, int y)
+void Sprite::Render()
 {
     SDL_Rect DestinyRect;
-    DestinyRect.x = x;
-    DestinyRect.y = y;
+    DestinyRect.x = int(GameObjAssoc.Box.x);
+    DestinyRect.y = int(GameObjAssoc.Box.y);
     DestinyRect.w = _ClipRect.w;
     DestinyRect.h = _ClipRect.h;
     if(SDL_RenderCopy(Game::GetInstance().GetRenderer(), _SpriteTexture, &_ClipRect, &DestinyRect))
@@ -70,6 +71,14 @@ int Sprite::GetHeight()
 
 bool Sprite::IsOpen()
 {
-
     return (_SpriteTexture != nullptr);
+}
+
+void Sprite::Update(float Dt)
+{
+}
+
+bool Is(std::string Type)
+{
+    return ("Sprite" == Type);
 }
