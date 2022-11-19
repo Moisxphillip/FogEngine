@@ -6,6 +6,8 @@
 #define FOG_SCRTITLE "Moises Felipe Jaco Andrade de Lima - 190018364 | Fog"
 #define FOG_SCRWIDTH 1024
 #define FOG_SCRHEIGHT 600
+#define FOG_SOUNDCHANNELS 32
+
 
 //The line below set the sdl path as the one on my project folder
 

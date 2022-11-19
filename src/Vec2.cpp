@@ -59,8 +59,10 @@ float Vec2::DistAngle(const Vec2& Vector)
 void Vec2::Rotate(const float& Rad)
 {
     float Sin = sin(Rad), Cos = cos(Rad);
-    this->x = this->x*Cos - this->y*Sin;
-    this->y = this->x*Sin + this->y*Cos;
+    float x = this->x*Cos + this->y*Sin;
+    float y = this->y*Cos - this->x*Sin;
+    this->x = x;
+    this->y = y;
 }
 
 //________________________________________

@@ -19,8 +19,10 @@ class Sound : public Component
 
         void Play(int);
         void Stop();
+        void Volume(int);
         void Open(std::string);
         bool IsOpen();
+        bool IsPlaying();
 
         void PanOn();
         void PanOff();

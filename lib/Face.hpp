@@ -7,6 +7,7 @@ class Face : public Component
 {
     private:
         int _FaceHP;
+        bool _SetToDie = false;
 
     public:
         Face(GameObject&);

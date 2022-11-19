@@ -39,19 +39,18 @@ void Game::_GameInitSDL()
 
 Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
 {
-    //Register window info
-    _GameTitle = Name;
-    _GameWidth = Width;
-    _GameHeight = Height;
-    _MixChannels = 32;
     
     if(_GameInstance != nullptr)//Report error if there is another instance working already
     {
         Error("Game::Game: Instance already exists");
         return;
     }
-    else 
+    else //Register window info
     {
+        _GameTitle = Name;
+        _GameWidth = Width;
+        _GameHeight = Height;
+        _MixChannels = FOG_SOUNDCHANNELS;
         _GameInstance = this;
     }
 
@@ -65,7 +64,6 @@ Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
     {
         Error("Game::Game: Window could not be created");   
     }
-    std::cout << "Game::Game: Window created\n";
     
     //Renderer creation
     //-1 allows SDL to choose the most appropriate render drive
@@ -74,9 +72,8 @@ Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
     {
         Error("Game::Game: Renderer could not be created");   
     }
-    std::cout << "Game::Game: Renderer created\n";
 
-    _GameState = new State;
+    _GameState = new State; //Creates a base state for the game 
 }
 
 Game::~Game()
@@ -96,15 +93,13 @@ Game::~Game()
 
 void Game::Run()
 {
-    //The quit state is sent by the alt+f4 command or by clicking on 'x'
-    _GameState->LoadAssets();
 
-    while(!_GameState->QuitRequested())
+    while(!_GameState->QuitRequested())    //Wait for quit state
     {
-        _GameState->Update(0);
-        _GameState->Render();
-        SDL_RenderPresent(_GameRenderer);
-        SDL_Delay(Fps(30));
+        _GameState->Update(0);//Calls update for all GameObject inside a scene
+        _GameState->Render(); //Calls render for all GameObject...
+        SDL_RenderPresent(_GameRenderer);//Presents the new rendered stuff on screen
+        SDL_Delay(Fps(30));//controls the framerate
     }
 }
 
@@ -120,7 +115,7 @@ State& Game::GetState()
 
 Game& Game::GetInstance()
 {
-    if(_GameInstance == nullptr)
+    if(_GameInstance == nullptr) //Only creates a new Game if there's no other instance of the class currently running
     {
         _GameInstance = new Game(FOG_SCRTITLE, FOG_SCRWIDTH, FOG_SCRHEIGHT);
     }

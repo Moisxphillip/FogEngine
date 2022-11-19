@@ -5,6 +5,7 @@ Sound::Sound(GameObject& GameObj)
 {
     _SoundPan = false;  
     _SoundChunk = nullptr;
+    _SoundVolume = 50;
 }
 
 Sound::Sound(GameObject& GameObj, std::string File)
@@ -23,10 +24,12 @@ Sound::~Sound()
 void Sound::Play(int Times = 1)
 {
     _SoundChannel = Mix_PlayChannel(-1, _SoundChunk, Times);
+    Mix_Volume(_SoundChannel, _SoundVolume);
     if(_SoundChannel == -1)
     {
         Error("Sound::Play: Mix_PlayChannel could not find an empty channel");
     }
+    
 }
 
 void Sound::Stop()
@@ -35,6 +38,11 @@ void Sound::Stop()
     {
         Mix_HaltChannel(_SoundChannel);
     }
+}
+
+void Sound::Volume(int NewVolume)
+{
+    _SoundVolume = NewVolume;
 }
 
 void Sound::Open(std::string File)
@@ -49,6 +57,11 @@ void Sound::Open(std::string File)
 bool Sound::IsOpen()
 {
     return (_SoundChunk != nullptr);
+}
+
+bool Sound::IsPlaying()
+{
+    return (Mix_Playing(_SoundChannel) != 0);
 }
 
 //Position-based sound pan&volume control

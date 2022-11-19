@@ -3,59 +3,59 @@
 
 State::State()
 {
-    _QuitRequested = false;
-    _StateMusic = nullptr;
-    //_StateBg = nullptr;
-	    
+    _QuitRequested = false; //Allows loop until quit is requested
+    _StateMusic = nullptr; 
+	
 	//Init random machine
     Rng.seed(5);
 	Rng.range(0,1000);
 
     LoadAssets();
-    _StateMusic->Play(-1, 1000);
+    _StateMusic->Play(-1, 1000); //Start playing phase theme
 }
 
 State::~State()
 {
     delete _StateMusic;
     _StateMusic = nullptr;
-    //delete _StateBg;
-    //_StateBg = nullptr;
-    GameObjVec.clear();
+
+    GameObjVec.clear(); //Gets rid of objects made
 }
 
 bool State::QuitRequested()
 {
-    return _QuitRequested;
+    return _QuitRequested; //Program will leave the Game::Run() Loop  if true
 }
 
 void State::LoadAssets()
 {
-    _StateMusic = new Music(FMUS_STAGE1);
-	GameObject *BgElement = new GameObject;
-    Sprite* StateBg = new Sprite(*BgElement, FIMG_OCEAN);//TODO fix
-	
-	BgElement->AddComponent(StateBg);
-	BgElement->Box = Rect(0,0,StateBg->GetWidth(),StateBg->GetHeight());
-	GameObjVec.emplace_back(BgElement);
-//	unique_ptr<GameObject>(BgElement);
+    _StateMusic = new Music(FMUS_STAGE1);//Load the music file for the current state
 
+	GameObject *BgElement = new GameObject;//Create a gameobject to be associated with the background sprite 
+
+    Sprite* StateBg = new Sprite(*BgElement, FIMG_OCEAN);//Load image background
+	
+	BgElement->AddComponent(StateBg); //registers component on the gameObject
+
+	BgElement->Box = Rect(0,0,StateBg->GetWidth(),StateBg->GetHeight());//Sets dimensions for the background GameObject
+	
+	GameObjVec.emplace_back(BgElement);//Stores GameObject on scene GameObj vector
 }
 
 void State::Update(float Dt)
 {
-    _Input();
+    _Input(); //Calls Input management
 	
-	for(int i = 0; i< GameObjVec.size(); i++)
+	for(int i = 0; i< (int)(GameObjVec.size()); i++)
 	{
-		GameObjVec[i]->Update(Dt);
+		GameObjVec[i]->Update(Dt);//Updates based on input and Dt
 	}
 
-	for(int i = 0; i< GameObjVec.size(); i++)
+	for(int i = 0; i< (int)(GameObjVec.size()); i++)
 	{
 		if(GameObjVec[i]->IsDead())
 		{
-			GameObjVec.erase(GameObjVec.begin()+i);
+			GameObjVec.erase(GameObjVec.begin()+i); //Removes stuff discarded by RequestDelete()
 			i--;
 		}
 	}
@@ -82,7 +82,7 @@ void State::_Input()
 		if(event.type == SDL_MOUSEBUTTONDOWN) 
         {
 			// Percorrer de trás pra frente pra sempre clicar no objeto mais de cima
-			for(int i = GameObjVec.size() - 1; i >= 0; --i) 
+			for(int i = (int)(GameObjVec.size()) - 1; i >= 0; --i) 
             {
 				// Obtem o ponteiro e casta pra Face.
 				GameObject* go = (GameObject*) GameObjVec[i].get();
@@ -116,39 +116,40 @@ void State::_Input()
 			else 
             {
                 Vec2 NewRot(200, 0);
-				std::cout << NewRot << "\n";
-				std::cout << Rng.gen() << "\n";
-
                 NewRot.Rotate(-M_PI + M_PI*(Rng.gen()/500.0));
-				std::cout << NewRot << "\n";
-				
 				Vec2 Pos(mouseX,mouseY);
-				NewRot= NewRot + Pos;
-				std::cout << NewRot << "\n";
+				NewRot = NewRot + Pos; //Rotate object
 				_AddObject((int)NewRot.x, (int)NewRot.y);
 			}
 		}
+		return;
 	}
 }
 
 void State::_AddObject(int x, int y)
 {
-	GameObject *Enemy = new GameObject;
-	Sprite *EnemySprite = new Sprite(*Enemy, FIMG_PENGFACE);
-	Enemy->Box = Rect(x,y,EnemySprite->GetWidth(),EnemySprite->GetHeight());
-	Sound *Sfx = new Sound(*Enemy, FAUD_BOOM);
-	Face *FaceEnemy = new Face(*Enemy);
+	GameObject *Enemy = new GameObject; //Create a base object for holding the components
+
+	Sprite *EnemySprite = new Sprite(*Enemy, FIMG_PENGFACE);//Create a Sprite
+
+	Enemy->Box = Rect(x-(EnemySprite->GetWidth()>>1),y-(EnemySprite->GetHeight()>>1),
+	        		EnemySprite->GetWidth(),EnemySprite->GetHeight());//Sets Sprite dimensions
+	Sound *Sfx = new Sound(*Enemy, FAUD_BOOM); //Create a Sound for the object
+	Face *FaceEnemy = new Face(*Enemy);//Define a Face for controlling received damage
+
+	//Insert components on the new GameObject
 	Enemy->AddComponent(EnemySprite);
 	Enemy->AddComponent(Sfx);
 	Enemy->AddComponent(FaceEnemy);
-	GameObjVec.emplace_back(Enemy);
+
+	GameObjVec.emplace_back(Enemy); //Register GameObject on the GameObjVec for executing with other objects in the scene
 	
 }
 
 void State::Render()
 {
-	for(int i = 0; i< GameObjVec.size(); i++)
+	for(int i = 0; i< (int)(GameObjVec.size()); i++)
 	{
-		GameObjVec[i]->Render();
+		GameObjVec[i]->Render(); //Calls render procedure for each existing GameObject
 	}
 }
