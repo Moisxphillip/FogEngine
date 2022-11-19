@@ -65,7 +65,6 @@ Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
     {
         Error("Game::Game: Window could not be created");   
     }
-    std::cout << "Game::Game: Window created\n";
     
     //Renderer creation
     //-1 allows SDL to choose the most appropriate render drive
@@ -74,7 +73,6 @@ Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
     {
         Error("Game::Game: Renderer could not be created");   
     }
-    std::cout << "Game::Game: Renderer created\n";
 
     _GameState = new State;
 }

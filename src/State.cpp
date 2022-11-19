@@ -3,6 +3,7 @@
 State::State()
 {
     _QuitRequested = false;
+    _QuitFade = false;
     _StateMusic = nullptr;
     _StateBg = nullptr;
 
@@ -32,9 +33,14 @@ void State::LoadAssets()
 
 void State::Update(float Dt)
 {
-    if(SDL_QuitRequested())
+    if(SDL_QuitRequested() && !_QuitFade)
     {
         _StateMusic->Stop(1000);
+        _QuitFade = true;
+        
+    }
+    if(!Mix_PlayingMusic())
+    {
         _QuitRequested = true;
     }
 }

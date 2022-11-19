@@ -11,6 +11,7 @@ class State
     private:
         Sprite *_StateBg;
         Music *_StateMusic;
+        bool _QuitFade;
         bool _QuitRequested;
 
     public:
