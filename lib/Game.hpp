@@ -1,22 +1,7 @@
 #ifndef FOG_GAME
 #define FOG_GAME
 
-//C++ Libs
-#include <iostream>
-#include <string>
-
-//Local libs
-#include "../lib/Tools.hpp"
-#include "../lib/Xrand.hpp"
-#include "../lib/State.hpp"
-
-
-//SDL Libs
-#define SDL_BASE
-#define SDL_IMAGE
-#define SDL_MIXER
-#define SDL_TTF
-#include "../lib/IncludeSDL.hpp"
+#include "../lib/IncludeAll.hpp"
 
 class Game
 {

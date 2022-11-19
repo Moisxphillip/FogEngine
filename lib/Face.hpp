@@ -1,7 +1,7 @@
 #ifndef FOG_FACE
 #define FOG_FACE
 
-#include "../lib/Component.hpp"
+#include "../lib/IncludeAll.hpp"
 
 class Face : public Component
 {
@@ -10,7 +10,10 @@ class Face : public Component
 
     public:
         Face(GameObject&);
+        ~Face();
+
         void Damage(int);
+        
         void Update(float);
         void Render();
         bool Is(std::string);

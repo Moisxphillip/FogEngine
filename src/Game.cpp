@@ -1,5 +1,5 @@
-#include "../lib/Game.hpp"
-#include "../lib/Settings.hpp"
+#include "../lib/IncludeAll.hpp"
+
 
 //Set value for singleton class
 Game* Game::_GameInstance = nullptr;
@@ -97,6 +97,8 @@ Game::~Game()
 void Game::Run()
 {
     //The quit state is sent by the alt+f4 command or by clicking on 'x'
+    _GameState->LoadAssets();
+
     while(!_GameState->QuitRequested())
     {
         _GameState->Update(0);

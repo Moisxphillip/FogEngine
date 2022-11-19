@@ -1,8 +1,7 @@
 #ifndef FOG_VEC2
 #define FOG_VEC2
 
-#include <list>
-#include <iostream>
+#include "../lib/IncludeAll.hpp"
 
 class Vec2
 {

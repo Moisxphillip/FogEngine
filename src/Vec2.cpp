@@ -1,5 +1,4 @@
-#include <cmath>
-#include "../lib/Vec2.hpp"
+#include "../lib/IncludeAll.hpp"
 
 #define PI_DEG 0.0174532925199432957692f
 #define DEG_PI 57.295779513082320876798f
@@ -134,28 +133,33 @@ inline Vec2& Vec2::operator=(const std::list<float>& List)
 {
     this->x = List.front();
     this->y = List.back();
+    return *this;
 }
 
 inline Vec2& Vec2::operator=(const std::list<int>& List)
 {
     this->x = float(List.front());
     this->y = float(List.back());
+    return *this;
 }
 
 inline Vec2& Vec2::operator+=(const Vec2& Vector)
 {
     this->x = this->x + Vector.x;
     this->y = this->y + Vector.y;
+    return *this;
 }
 
 inline Vec2& Vec2::operator-=(const Vec2& Vector)
 {
     this->x = this->x - Vector.x;
     this->y = this->y - Vector.y;
+    return *this;
 }
 
 inline Vec2& Vec2::operator*=(const float& Scalar)
 {
     this->x = this->x * Scalar;
     this->y = this->y * Scalar;
+    return *this;
 }

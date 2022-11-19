@@ -1,6 +1,6 @@
-#include "../lib/GameObject.hpp"
+#include "../lib/IncludeAll.hpp"
 
-//future improvement: sort component vector on new addition, implement binary search for Get/Remove;
+//TODO future improvement: sort component vector on new addition, implement binary search for Get/Remove;
 
 GameObject::GameObject()
 {
@@ -10,11 +10,7 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-    while(!_GameObjComponents.empty())
-    {
-        delete _GameObjComponents.back(); //TODO refactor to avoid redimensioning
-        _GameObjComponents.pop_back() ;
-    }
+    _GameObjComponents.clear();    
 }
 
 void GameObject::Update(float Dt)
@@ -45,14 +41,15 @@ void GameObject::RequestDelete()
 
 void GameObject::AddComponent(Component* GameComponent)
 {
-    _GameObjComponents.push_back(GameComponent);
+    _GameObjComponents.emplace_back(GameComponent);
 }
 
 void GameObject::RemoveComponent(Component* GameComponent)
 {
+
     for (int i = 0; i < _GameObjComponents.size(); i++)
     {
-        if(_GameObjComponents[i] == GameComponent)
+        if(_GameObjComponents[i].get() == GameComponent)
         {
             _GameObjComponents.erase(_GameObjComponents.begin()+i);
             return;
@@ -66,8 +63,7 @@ Component* GameObject::GetComponent(std::string ComponentName)
     {
         if(_GameObjComponents[i]->Is(ComponentName))
         {
-            _GameObjComponents.erase(_GameObjComponents.begin()+i);
-            return _GameObjComponents[i];
+            return _GameObjComponents[i].get();
         }
     }
     return nullptr;

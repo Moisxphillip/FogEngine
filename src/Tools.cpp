@@ -1,4 +1,5 @@
-#include "../lib/Tools.hpp"
+#include "../lib/IncludeAll.hpp"
+
 
 void Error(std::string Info)
 {

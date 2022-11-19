@@ -1,7 +1,5 @@
-#include "../lib/Sprite.hpp"
+#include "../lib/IncludeAll.hpp"
 
-//Including on the hpp results in failure, so...
-#include "../lib/Game.hpp"
 
 Sprite::Sprite(GameObject& GameObj)
 : Component(GameObj)
@@ -78,7 +76,7 @@ void Sprite::Update(float Dt)
 {
 }
 
-bool Is(std::string Type)
+bool Sprite::Is(std::string Type)
 {
     return ("Sprite" == Type);
 }

@@ -1,4 +1,4 @@
-#include "../lib/Rect.hpp"
+#include "../lib/IncludeAll.hpp"
 
 Rect::Rect(float x, float y, float w, float h)
 {
@@ -6,6 +6,7 @@ Rect::Rect(float x, float y, float w, float h)
     this->y = y;
     this->w = w;
     this->h = h;
+    CenterV = Vec2(0, 0);
     this->CenterV = this->Center();
 }
 

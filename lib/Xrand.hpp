@@ -4,12 +4,11 @@
 #include <climits>
 #include <algorithm>
 
-namespace Xrand
-{
-class u64 //Generates unsigned integers between 0x1 and 0xFFFFFFFFFFFFFFFF
+
+class XrandU64 //Generates unsigned integers between 0x1 and 0xFFFFFFFFFFFFFFFF
 {
     public:
-        u64();
+        XrandU64();
         void seed(uint64_t);
         void range(uint64_t, uint64_t);
         uint64_t min();
@@ -25,7 +24,7 @@ class u64 //Generates unsigned integers between 0x1 and 0xFFFFFFFFFFFFFFFF
         uint64_t ___xorshift64star(uint64_t);
 };
 
-class f32 //Generates float numbers between 0 and 1
+class XrandF32 //Generates float numbers between 0 and 1
 {
     public:
         void seed(uint64_t);
@@ -33,8 +32,8 @@ class f32 //Generates float numbers between 0 and 1
         float min(){return 0.0;};//Minimum value generated
         float max(){return 1.0;};//Maximum value generated
     private:
-        u64 _xor64;
+        XrandU64 _xor64;
         
 };
-}// end of xrand namespace
+
 #endif//__XRAND__HEADER

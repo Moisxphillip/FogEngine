@@ -1,13 +1,7 @@
 #ifndef FOG_SPRITE
 #define FOG_SPRITE
 
-#include <string>
-
-#define SDL_BASE
-#define SDL_IMAGE
-#include "../lib/IncludeSDL.hpp"
-#include "../lib/Tools.hpp"
-#include "../lib/Component.hpp"
+#include "../lib/IncludeAll.hpp"
 
 class Sprite : public Component
 {

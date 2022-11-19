@@ -1,15 +1,15 @@
 #ifndef FOG_GAMEOBJ
 #define FOG_GAMEOBJ
 
-#include "../lib/Rect.hpp"
-#include "../lib/Component.hpp"
-#include <vector>
+#include "../lib/IncludeAll.hpp"
+
+class Component;
 
 class GameObject
 {
     private:
         bool _GameObjDead;
-        std::vector<Component*> _GameObjComponents;
+        std::vector<std::unique_ptr<Component>> _GameObjComponents;
 
     public:
         Rect Box;

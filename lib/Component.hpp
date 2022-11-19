@@ -1,8 +1,7 @@
 #ifndef FOG_COMPONENT
 #define FOG_COMPONENT
 
-#include "../lib/GameObject.hpp"
-#include <string>
+#include "../lib/IncludeAll.hpp"
 
 class Component
 {

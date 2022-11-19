@@ -1,8 +1,9 @@
 #ifndef FOG_RECT
 #define FOG_RECT
 
-#include <iostream>
-#include "../lib/Vec2.hpp"
+#include "../lib/IncludeAll.hpp"
+
+class Vec2;
 
 class Rect
 {

@@ -7,7 +7,7 @@
  * #include "SDL_include.h"
 */
 
-#include "../lib/Settings.hpp"
+#define FOG_MYMACHINE
 
 #ifdef FOG_MYMACHINE
 	/************************************************

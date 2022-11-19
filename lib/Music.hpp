@@ -1,10 +1,7 @@
 #ifndef FOG_MUSIC
 #define FOG_MUSIC
 
-#define SDL_BASE
-#define SDL_MIXER
-#include "../lib/IncludeSDL.hpp"
-#include "../lib/Tools.hpp"
+#include "../lib/IncludeAll.hpp"
 
 class Music
 {

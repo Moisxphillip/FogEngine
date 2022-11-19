@@ -1,10 +1,7 @@
 #ifndef FOG_SOUND
 #define FOG_SOUND
 
-#include "../lib/Component.hpp"
-
-#define SDL_MIXER
-#include "../lib/IncludeSDL.hpp"
+#include "../lib/IncludeAll.hpp"
 
 class Sound : public Component
 {
@@ -12,6 +9,8 @@ class Sound : public Component
         Mix_Chunk* _SoundChunk;
         int _SoundChannel;
         int _SoundVolume;
+        bool _SoundPan;
+        void _SoundPosition();
     
     public:    
         Sound(GameObject&);
@@ -22,6 +21,9 @@ class Sound : public Component
         void Stop();
         void Open(std::string);
         bool IsOpen();
+
+        void PanOn();
+        void PanOff();
         
         //Inheritance Functions
         void Update(float);

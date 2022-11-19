@@ -1,4 +1,4 @@
-#include "../lib/Music.hpp"
+#include "../lib/IncludeAll.hpp"
 
 Music::Music()
 {
