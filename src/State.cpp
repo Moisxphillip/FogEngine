@@ -5,7 +5,7 @@ State::State()
 {
     _QuitRequested = false; //Allows loop until quit is requested
     _StateMusic = nullptr; 
-	
+    _QuitFade = false;
 	//Init random machine
     Rng.seed(5);
 	Rng.range(0,1000);
@@ -73,9 +73,10 @@ void State::_Input()
 	while (SDL_PollEvent(&event)) 
     {
 		// Se o evento for quit, setar a flag para terminação
-		if(event.type == SDL_QUIT) 
+		if(event.type == SDL_QUIT && !_QuitFade) 
         {
-			_QuitRequested = true;
+			_StateMusic->Stop(1000);
+            _QuitFade = true;
 		}
 		
 		// Se o evento for clique...
@@ -108,9 +109,10 @@ void State::_Input()
 		}
 		if(event.type == SDL_KEYDOWN) {
 			// Se a tecla for ESC, setar a flag de quit
-			if(event.key.keysym.sym == SDLK_ESCAPE) 
+			if(event.key.keysym.sym == SDLK_ESCAPE && !_QuitFade) 
             {
-				_QuitRequested = true;
+                _StateMusic->Stop(1000);
+                _QuitFade = true;
 			}
 			// Se não, crie um objeto
 			else 
@@ -122,6 +124,12 @@ void State::_Input()
 				_AddObject((int)NewRot.x, (int)NewRot.y);
 			}
 		}
+
+        if(!Mix_PlayingMusic())//Ensures fadeout finishes before closing
+        {
+            _QuitRequested = true;
+        }
+
 		return;
 	}
 }
@@ -136,7 +144,8 @@ void State::_AddObject(int x, int y)
 	        		EnemySprite->GetWidth(),EnemySprite->GetHeight());//Sets Sprite dimensions
 	Sound *Sfx = new Sound(*Enemy, FAUD_BOOM); //Create a Sound for the object
 	Face *FaceEnemy = new Face(*Enemy);//Define a Face for controlling received damage
-
+    Sfx->Pan = true;
+    
 	//Insert components on the new GameObject
 	Enemy->AddComponent(EnemySprite);
 	Enemy->AddComponent(Sfx);

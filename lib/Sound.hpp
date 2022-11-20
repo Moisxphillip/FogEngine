@@ -9,10 +9,10 @@ class Sound : public Component
         Mix_Chunk* _SoundChunk;
         int _SoundChannel;
         int _SoundVolume;
-        bool _SoundPan;
         void _SoundPosition();
     
     public:    
+        bool Pan;
         Sound(GameObject&);
         Sound(GameObject&, std::string);
         ~Sound();
@@ -23,9 +23,6 @@ class Sound : public Component
         void Open(std::string);
         bool IsOpen();
         bool IsPlaying();
-
-        void PanOn();
-        void PanOff();
         
         //Inheritance Functions
         void Update(float);

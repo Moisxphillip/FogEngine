@@ -9,6 +9,7 @@ class State
         //Sprite *_StateBg;
         Music *_StateMusic;
         bool _QuitRequested;
+        bool _QuitFade;
         void _Input();
         void _AddObject(int, int);
         std::vector<std::unique_ptr<GameObject>> GameObjVec;

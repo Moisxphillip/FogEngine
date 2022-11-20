@@ -30,11 +30,11 @@
 #include "../lib/GameObject.hpp"
 #include "../lib/Component.hpp"
 #include "../lib/Music.hpp"
+#include "../lib/Sound.hpp"
 #include "../lib/State.hpp"
 #include "../lib/Game.hpp"
 #include "../lib/Face.hpp"
 #include "../lib/Path.hpp"
-#include "../lib/Sound.hpp"
 #include "../lib/Sprite.hpp"
 
 #endif//FOG_INCLUDEALL

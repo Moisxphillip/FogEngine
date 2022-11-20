@@ -3,7 +3,7 @@
 Sound::Sound(GameObject& GameObj)
 : Component(GameObj)
 {
-    _SoundPan = false;  
+    Pan = false;
     _SoundChunk = nullptr;
     _SoundVolume = 50;
 }
@@ -21,15 +21,32 @@ Sound::~Sound()
 }
 
 
-void Sound::Play(int Times = 1)
+void Sound::Play(int Times = 0)
 {
-    _SoundChannel = Mix_PlayChannel(-1, _SoundChunk, Times);
-    Mix_Volume(_SoundChannel, _SoundVolume);
-    if(_SoundChannel == -1)
+    for(int i = 0; i<FOG_SOUNDCHANNELS; i++)
     {
-        Error("Sound::Play: Mix_PlayChannel could not find an empty channel");
+        if(Mix_Playing(i) == 0)//Found a free channel
+        {
+            if(Pan)
+            {
+                //Set volume for each channel based on the gameobject center position
+                Vec2 SoundPos = GameObjAssoc.Box.Center();
+                int R = 127 + ((int)SoundPos.x >> 3); //FIXME Will need a better calculation when adding screen resize options
+                R=(R>255?255:R);//Overflow prevention
+                int L = 383-R;
+                L=(L>255?255:L);//Overflow prevention
+                
+                Mix_SetPanning(i, L, R);
+            }
+            else
+            {
+                Mix_Volume(i, _SoundVolume);
+            }
+            _SoundChannel = Mix_PlayChannel(i, _SoundChunk, Times);
+            return;
+        }
     }
-    
+    Error("Sound::Play: Mix_PlayChannel could not find an empty channel");
 }
 
 void Sound::Stop()
@@ -68,16 +85,6 @@ bool Sound::IsPlaying()
 void Sound::_SoundPosition()
 {
 
-}
-
-inline void Sound::PanOn()
-{
-    _SoundPan = true;
-}
-
-inline void Sound::PanOff()
-{
-    _SoundPan = false;
 }
 
 //Inheritance Functions

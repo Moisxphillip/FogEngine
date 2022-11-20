@@ -14,7 +14,7 @@ Face::~Face()
 
 void Face::Damage(int Dmg)
 {
-    if(_FaceHP <= 0)//Avoids executing the sound twice
+    if(_SetToDie)//Avoids executing when the object should be dead
     {
         return;
     }
@@ -24,9 +24,9 @@ void Face::Damage(int Dmg)
     if(_FaceHP <= 0)
     {
         Sound *Explosion = (Sound*)(GameObjAssoc.GetComponent("Sound"));
-        Explosion->Play(1);
+        Explosion->Play(0);
+        _SetToDie = true;
         GameObjAssoc.RemoveComponent(GameObjAssoc.GetComponent("Sprite"));
-        _SetToDie = true;//Gambiarra do som
     }
 }
 
