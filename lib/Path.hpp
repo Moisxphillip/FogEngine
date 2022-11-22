@@ -8,11 +8,11 @@
 *///--------------------------------------
 
 //Music
-#define FMUS_STAGE1 "./res/audio/greenpath.ogg"
+#define FMUS_STAGE1 "./res/audio/stageState.ogg"
 
 //Audio
-//#define FAUD_BOOM "./res/audio/boom.wav"
-#define FAUD_BOOM "./res/audio/snore.ogg"
+#define FAUD_BOOM "./res/audio/boom.wav"
+//#define FAUD_BOOM "./res/audio/snore.ogg"
 
 //Image
 #define FIMG_OCEAN "./res/img/ocean.jpg"
