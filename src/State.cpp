@@ -9,7 +9,6 @@ State::State()
 	//Init random machine
     Rng.seed(5);
 	Rng.range(0,1000);
-
     LoadAssets();
     _StateMusic->Play(-1, 1000); //Start playing phase theme
 }
@@ -40,6 +39,13 @@ void State::LoadAssets()
 	BgElement->Box = Rect(0,0,StateBg->GetWidth(),StateBg->GetHeight());//Sets dimensions for the background GameObject
 	
 	GameObjVec.emplace_back(BgElement);//Stores GameObject on scene GameObj vector
+		
+	//Init TileMap
+	GameObject *StateMap = new GameObject();
+	TileSet *StateTileSet = new TileSet(FOG_TILEWIDTH, FOG_TILEHEIGHT, FIMG_TILESET);
+	TileMap *StateTileMap = new TileMap(*StateMap, FMAP_TILEMAP, StateTileSet);
+	StateMap->AddComponent(StateTileMap);
+	GameObjVec.emplace_back(StateMap);
 }
 
 void State::Update(float Dt)

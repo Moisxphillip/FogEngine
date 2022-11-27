@@ -19,6 +19,7 @@ class Sprite : public Component
         void Open(std::string);
         void SetClip(int, int, int, int);
         void Render();
+        void Render(float, float);
         int GetWidth();
         int GetHeight();
         bool IsOpen();

@@ -12,6 +12,9 @@
 #include <stdint.h>
 #include <climits>
 #include <algorithm>
+#include <unordered_map>
+#include <fstream>
+#include <iomanip>
 
 //SDL
 #define SDL_BASE
@@ -36,5 +39,8 @@
 #include "../lib/Face.hpp"
 #include "../lib/Path.hpp"
 #include "../lib/Sprite.hpp"
+#include "../lib/Resources.hpp"
+#include "../lib/TileSet.hpp"
+#include "../lib/TileMap.hpp"
 
 #endif//FOG_INCLUDEALL

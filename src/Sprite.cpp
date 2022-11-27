@@ -46,9 +46,15 @@ void Sprite::SetClip(int x, int y, int w, int h)
 
 void Sprite::Render()
 {
+    Render(GameObjAssoc.Box.x, GameObjAssoc.Box.y);
+    
+}
+
+void Sprite::Render(float x, float y)
+{
     SDL_Rect DestinyRect;
-    DestinyRect.x = int(GameObjAssoc.Box.x);
-    DestinyRect.y = int(GameObjAssoc.Box.y);
+    DestinyRect.x = x;
+    DestinyRect.y = y;
     DestinyRect.w = _ClipRect.w;
     DestinyRect.h = _ClipRect.h;
     if(SDL_RenderCopy(Game::GetInstance().GetRenderer(), _SpriteTexture, &_ClipRect, &DestinyRect))

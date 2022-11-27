@@ -21,4 +21,5 @@ void Component::Update(float Dt)
 
 bool Component::Is(std::string Type)
 {
+    return (Type == "Component");
 }

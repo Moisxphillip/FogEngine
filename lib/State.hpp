@@ -6,7 +6,6 @@
 class State
 {
     private:
-        //Sprite *_StateBg;
         Music *_StateMusic;
         bool _QuitRequested;
         bool _QuitFade;
