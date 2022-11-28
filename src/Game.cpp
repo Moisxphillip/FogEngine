@@ -39,7 +39,6 @@ void Game::_GameInitSDL()
 
 Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
 {
-    
     if(_GameInstance != nullptr)//Report error if there is another instance working already
     {
         Error("Game::Game: Instance already exists");
@@ -78,6 +77,9 @@ Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
 
 Game::~Game()
 {
+    //Clear memory used by Resources class
+    Resources::FlushContext();
+
     //Quit SDL subsystems
     Mix_CloseAudio();
     Mix_Quit();

@@ -15,20 +15,16 @@ Sprite::Sprite(GameObject& GameObj, std::string File)
 
 Sprite::~Sprite()
 {
-    if(_SpriteTexture != nullptr)
-    {
-        SDL_DestroyTexture(_SpriteTexture);
-    }
-    _SpriteTexture = nullptr;
 }
 
 void Sprite::Open(std::string File)
 {
-    _SpriteTexture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), File.c_str());
+    _SpriteTexture = Resources::GetImage(File);
     if(_SpriteTexture == nullptr)
     {
         Error("Sprite::Open: Image could not be loaded");
     }
+
     if(SDL_QueryTexture(_SpriteTexture, nullptr, nullptr, &_SpriteWidth, &_SpriteHeight))
     {
         Error("Sprite::Open: QueryTexture failed");

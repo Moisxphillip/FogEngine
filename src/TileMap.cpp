@@ -11,8 +11,7 @@ TileMap::TileMap(GameObject& GameObj, std::string File, TileSet* CurrTileSet)
 
 TileMap::~TileMap()
 {
-    delete _CurrTileSet;
-    _CurrTileSet = nullptr;
+
 }
 
 void TileMap::Load(std::string File)

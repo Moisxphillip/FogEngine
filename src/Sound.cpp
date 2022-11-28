@@ -17,12 +17,12 @@ Sound::Sound(GameObject& GameObj, std::string File)
 Sound::~Sound()
 {
     Stop();
-    Mix_FreeChunk(_SoundChunk);
 }
 
 
 void Sound::Play(int Times = 0)
 {
+    //Channel finding is handled by our class, since we need control over the chunk settings
     for(int i = 0; i<FOG_SOUNDCHANNELS; i++)
     {
         if(Mix_Playing(i) == 0)//Found a free channel
@@ -46,7 +46,7 @@ void Sound::Play(int Times = 0)
             return;
         }
     }
-    Error("Sound::Play: Mix_PlayChannel could not find an empty channel");
+    Error("Sound::Play: Could not find an empty channel");
 }
 
 void Sound::Stop()
@@ -64,7 +64,7 @@ void Sound::Volume(int NewVolume)
 
 void Sound::Open(std::string File)
 {
-    _SoundChunk = Mix_LoadWAV(File.c_str());
+    _SoundChunk = Resources::GetSound(File);
     if(_SoundChunk == nullptr)
     {
         Error("Sound::Load: Mix_LoadWAV could not load the soundchunk "+File);

@@ -13,8 +13,6 @@ Music::Music(std::string File)
 
 Music::~Music()
 {
-    Mix_FreeMusic(_Music);
-    _Music = nullptr;
 }
 
 
@@ -29,7 +27,7 @@ void Music::Play(int Times = -1, int FadeIn = 0)
 
     if(Mix_FadeInMusic(_Music, Times, FadeIn))
     {
-        Error("Music::Play: Music device failed");
+        Error("Music::Play: Music device failed to fade in and play");
     }
 }
 
@@ -41,9 +39,9 @@ void Music::Stop(int FadeOut = 1500)
     }
 }
 
-void Music::Open(std::string Path)
+void Music::Open(std::string File)
 {
-    _Music = Mix_LoadMUS(Path.c_str());
+    _Music = Resources::GetMusic(File);
     if(_Music == nullptr)
     {
         Error("Music::Open: Music asset could not be loaded");

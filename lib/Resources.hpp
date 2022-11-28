@@ -6,20 +6,20 @@
 class Resources
 {
     private:
-        std::unordered_map<std::string, SDL_Texture*> _ImageTable;
-        std::unordered_map<std::string, Mix_Music*> _MusicTable;
-        std::unordered_map<std::string, Mix_Chunk*> _SoundTable;
+        static std::unordered_map<std::string, SDL_Texture*> _ImageTable;
+        static std::unordered_map<std::string, Mix_Music*> _MusicTable;
+        static std::unordered_map<std::string, Mix_Chunk*> _SoundTable;
 
     public:
-        SDL_Texture* GetImage(std::string);
-        Mix_Music* GetMusic(std::string);
-        Mix_Chunk* GetSound(std::string);
+        static SDL_Texture* GetImage(std::string&);
+        static Mix_Music* GetMusic(std::string&);
+        static Mix_Chunk* GetSound(std::string&);
 
-        void ClearImages();
-        void ClearMusics();
-        void ClearSounds();
+        static void ClearImages();
+        static void ClearMusics();
+        static void ClearSounds();
+        static void FlushContext();
     
 };
-
 
 #endif//FOG_RESOURCES
