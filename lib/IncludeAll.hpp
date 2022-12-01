@@ -42,5 +42,8 @@
 #include "../lib/Resources.hpp"
 #include "../lib/TileSet.hpp"
 #include "../lib/TileMap.hpp"
+#include "../lib/InputManager.hpp"
+#include "../lib/Camera.hpp"
+#include "../lib/CameraFollower.hpp"
 
 #endif//FOG_INCLUDEALL

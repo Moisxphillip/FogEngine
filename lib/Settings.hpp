@@ -9,6 +9,8 @@
 #define FOG_SOUNDCHANNELS 32
 #define FOG_TILEWIDTH 64
 #define FOG_TILEHEIGHT 64
+#define FOG_KEYARR 416
+#define FOG_BUTTONARR 6
 
 
 //The line below set the sdl path as the one on my project folder
