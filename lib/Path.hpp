@@ -8,12 +8,10 @@
 *///--------------------------------------
 
 //Music
-//#define FMUS_STAGE1 "./res/audio/stageState.ogg"
-#define FMUS_STAGE1 "./res/audio/fungal_mantis.ogg"
+#define FMUS_STAGE1 "./res/audio/stageState.ogg"
 
 //Audio
-//#define FAUD_BOOM "./res/audio/boom.wav"
-#define FAUD_BOOM "./res/audio/snore.ogg"
+#define FAUD_BOOM "./res/audio/boom.wav"
 
 //Image
 #define FIMG_OCEAN "./res/img/ocean.jpg"
