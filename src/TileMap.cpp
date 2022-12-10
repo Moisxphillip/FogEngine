@@ -6,7 +6,26 @@ TileMap::TileMap(GameObject& GameObj, std::string File, TileSet* CurrTileSet)
     _CurrTileSet = nullptr;
     this->Load(File);
     this->SetTileSet(CurrTileSet);
+    this->_RefLayer = 0;
     
+}
+
+void TileMap::SetRefLayer(int Value)
+{
+    _RefLayer = Value;
+}
+
+float TileMap::_GetLayerMult(int CurrLayer)
+{
+    CurrLayer-=_RefLayer;
+    if(CurrLayer < 0)
+    {
+        CurrLayer--;
+        return 1.0f/(-CurrLayer);
+    }
+
+    CurrLayer++;
+    return (1.0f*CurrLayer); 
 }
 
 TileMap::~TileMap()
@@ -75,13 +94,14 @@ void TileMap::Render()
 
 void TileMap::RenderLayer(int Layer, int CamX, int CamY)
 {
+    float Parallax = _GetLayerMult(Layer);
     for(int y = 0; y < _MapHeight; y++)//iterates through rows
     {
         for(int x = 0; x < _MapWidth; x++)//iterates through columns
         {
             _CurrTileSet->RenderTile(At(x, y, Layer), //finds tile identifier
-                float(x*_CurrTileSet->GetTileWidth()), //dimensions to crop
-                float(y*_CurrTileSet->GetTileHeight()));
+                float(CamX*Parallax + x*_CurrTileSet->GetTileWidth()), //Crop+positioning
+                float(CamY*Parallax + y*_CurrTileSet->GetTileHeight()));
         }        
     }
 }

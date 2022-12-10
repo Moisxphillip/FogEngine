@@ -18,7 +18,7 @@ class State
 
         State();
         ~State();
-
+        Camera Cam;
         bool QuitRequested();
         void LoadAssets();
         void Input();

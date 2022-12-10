@@ -8,6 +8,7 @@
 *///--------------------------------------
 
 //Music
+//#define FMUS_STAGE1 "./res/audio/stageState.ogg"
 #define FMUS_STAGE1 "./res/audio/fungal_mantis.ogg"
 
 //Audio

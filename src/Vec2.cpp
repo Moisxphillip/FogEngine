@@ -131,35 +131,35 @@ std::ostream& operator<<(std::ostream& Out, const Vec2& Vector)
 
 //___________________________________________
 
-inline Vec2& Vec2::operator=(const std::list<float>& List)
+Vec2& Vec2::operator=(const std::list<float>& List)
 {
     this->x = List.front();
     this->y = List.back();
     return *this;
 }
 
-inline Vec2& Vec2::operator=(const std::list<int>& List)
+Vec2& Vec2::operator=(const std::list<int>& List)
 {
     this->x = float(List.front());
     this->y = float(List.back());
     return *this;
 }
 
-inline Vec2& Vec2::operator+=(const Vec2& Vector)
+Vec2& Vec2::operator+=(const Vec2& Vector)
 {
     this->x = this->x + Vector.x;
     this->y = this->y + Vector.y;
     return *this;
 }
 
-inline Vec2& Vec2::operator-=(const Vec2& Vector)
+Vec2& Vec2::operator-=(const Vec2& Vector)
 {
     this->x = this->x - Vector.x;
     this->y = this->y - Vector.y;
     return *this;
 }
 
-inline Vec2& Vec2::operator*=(const float& Scalar)
+Vec2& Vec2::operator*=(const float& Scalar)
 {
     this->x = this->x * Scalar;
     this->y = this->y * Scalar;

@@ -1,6 +1,5 @@
 #include "../lib/IncludeAll.hpp"
 
-
 //Set value for singleton class
 Game* Game::_GameInstance = nullptr;
 
@@ -72,6 +71,9 @@ Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
         Error("Game::Game: Renderer could not be created");   
     }
 
+    _FrameStart = SDL_GetTicks();
+    _Dt = 0.0f;
+
     _GameState = new State; //Creates a base state for the game 
 }
 
@@ -95,10 +97,11 @@ Game::~Game()
 
 void Game::Run()
 {
-
     while(!_GameState->QuitRequested())    //Wait for quit state
     {
-        _GameState->Update(0);//Calls update for all GameObject inside a scene
+        _CalculateDt();
+        InputManager::GetInstance().Update();
+        _GameState->Update(GetDt());//Calls update for all GameObject inside a scene
         _GameState->Render(); //Calls render for all GameObject...
         SDL_RenderPresent(_GameRenderer);//Presents the new rendered stuff on screen
         SDL_Delay(Fps(30));//controls the framerate
@@ -122,4 +125,16 @@ Game& Game::GetInstance()
         _GameInstance = new Game(FOG_SCRTITLE, FOG_SCRWIDTH, FOG_SCRHEIGHT);
     }
     return *_GameInstance;
+}
+
+inline void Game::_CalculateDt()
+{
+    int FrameEnd = SDL_GetTicks(); //Get Ms count since app start
+    _Dt = (FrameEnd - _FrameStart)/1000.0f;//Ms->s is done by the division
+    _FrameStart = FrameEnd;
+}
+
+inline float Game::GetDt()
+{
+    return _Dt;
 }

@@ -22,6 +22,11 @@ class Game
         SDL_Renderer* _GameRenderer = nullptr;
         State* _GameState = nullptr;
 
+        int _FrameStart;
+        float _Dt;
+        void _CalculateDt();
+
+
     public:
         //Copy prevention
         Game(const Game&) = delete;
@@ -33,6 +38,7 @@ class Game
         SDL_Renderer* GetRenderer();
         State& GetState();
         static Game& GetInstance();
+        float GetDt();
 
 };
 

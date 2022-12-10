@@ -57,11 +57,11 @@ InputManager::~InputManager()
 void InputManager::Update()
 {
     SDL_Event InputEvent;
+    int KeySym;
 	SDL_GetMouseState(&_MouseX, &_MouseY);//Get mouse coordinates
     _UpdateCounter++;
 
-	// SDL_PollEvent retorna 1 se encontrar eventos, zero caso contrário
-	while(SDL_PollEvent(&InputEvent))
+	while(SDL_PollEvent(&InputEvent))//Returns 1 if there's an event happening
     {
         switch(InputEvent.type)
         {
@@ -72,26 +72,26 @@ void InputManager::Update()
             case SDL_KEYDOWN:
                 if(!InputEvent.key.repeat) //If there's no repetition (we can't mess the update counter)
                 {
-                    int KeySym = ((InputEvent.key.keysym.sym <= 0x7F) ? InputEvent.key.keysym.sym : InputEvent.key.keysym.sym-0x3FFFFF81);//adjustment for fitting on key vector
+                    KeySym = ((InputEvent.key.keysym.sym <= 0x7F) ? InputEvent.key.keysym.sym : InputEvent.key.keysym.sym-0x3FFFFF81);//adjustment for fitting on key vector
                     _KeyState[KeySym] = true;
                     _KeyUpdate[KeySym] = _UpdateCounter;
                 }                
                 break;
 
             case SDL_KEYUP:
-                int KeySym = ((InputEvent.key.keysym.sym <= 0x7F) ? InputEvent.key.keysym.sym : InputEvent.key.keysym.sym-0x3FFFFF81);//adjustment for fitting on key vector
+                KeySym = ((InputEvent.key.keysym.sym <= 0x7F) ? InputEvent.key.keysym.sym : InputEvent.key.keysym.sym-0x3FFFFF81);//adjustment for fitting on key vector
                 _KeyState[KeySym] = false;
                 _KeyUpdate[KeySym] = _UpdateCounter;
                 break;
 
             case SDL_MOUSEBUTTONDOWN:
                 _MouseState[InputEvent.button.button] = true;
-                _MouseState[InputEvent.button.button] = _UpdateCounter;
+                _MouseUpdate[InputEvent.button.button] = _UpdateCounter;
                 break;
 
             case SDL_MOUSEBUTTONUP:
                 _MouseState[InputEvent.button.button] = false;
-                _MouseState[InputEvent.button.button] = _UpdateCounter;
+                _MouseUpdate[InputEvent.button.button] = _UpdateCounter;
                 break;
 
             default:

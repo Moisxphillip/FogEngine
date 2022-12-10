@@ -11,7 +11,7 @@ class CameraFollower: public Component
         CameraFollower(GameObject&);
         void Update(float);
         void Render();
-        bool Is();
+        bool Is(std::string);
 
 };
 

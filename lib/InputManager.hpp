@@ -3,18 +3,19 @@
 
 #include "../lib/IncludeAll.hpp"
 
-#define K_LEFT_ARROW SDLK_LEFT
-#define K_RIGHT_ARROW SDLK_RIGHT
-#define K_UP_ARROW SDLK_UP
+#define K_LEFTARROW SDLK_LEFT
+#define K_RIGHTARROW SDLK_RIGHT
+#define K_UPARROW SDLK_UP
 #define K_DOWNARROW SDLK_DOWN
 #define K_ENTER SDLK_RETURN
+#define K_SPACE SDLK_SPACE
 
 #define K_W  SDLK_w
 #define K_A SDLK_a
 #define K_S SDLK_s
 #define K_D SDLK_d
 
-#define K_ESCAPE SDLK_ESCAPE
+#define K_ESC SDLK_ESCAPE
 #define M_LEFT SDL_BUTTON_LEFT
 #define M_RIGHT SDL_BUTTON_RIGHT
 

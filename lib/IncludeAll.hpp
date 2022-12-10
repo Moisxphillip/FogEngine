@@ -34,6 +34,7 @@
 #include "../lib/Component.hpp"
 #include "../lib/Music.hpp"
 #include "../lib/Sound.hpp"
+#include "../lib/Camera.hpp"
 #include "../lib/State.hpp"
 #include "../lib/Game.hpp"
 #include "../lib/Face.hpp"
@@ -43,7 +44,6 @@
 #include "../lib/TileSet.hpp"
 #include "../lib/TileMap.hpp"
 #include "../lib/InputManager.hpp"
-#include "../lib/Camera.hpp"
 #include "../lib/CameraFollower.hpp"
 
 #endif//FOG_INCLUDEALL

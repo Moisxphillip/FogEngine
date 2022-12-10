@@ -20,6 +20,8 @@ class Sprite : public Component
         void SetClip(int, int, int, int);
         void Render();
         void Render(float, float);
+        void Render(float, float, float, SDL_RendererFlip&);
+        void Render(float, SDL_RendererFlip&);
         int GetWidth();
         int GetHeight();
         bool IsOpen();

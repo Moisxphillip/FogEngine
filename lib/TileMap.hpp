@@ -12,6 +12,8 @@ class TileMap: public Component
         int _MapHeight;
         int _LayerArea;
         int _MapDepth;
+        int _RefLayer;
+        float _GetLayerMult(int);
 
     public:
         TileMap(GameObject&, std::string, TileSet*);
@@ -23,6 +25,9 @@ class TileMap: public Component
         int GetWidth();
         int GetHeight();
         int GetDepth();
+
+        void SetRefLayer(int);
+
         //inheritance functions
         void Render();
         void Update(float);

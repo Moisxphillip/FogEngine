@@ -43,7 +43,6 @@ void Sprite::SetClip(int x, int y, int w, int h)
 void Sprite::Render()
 {
     Render(GameObjAssoc.Box.x, GameObjAssoc.Box.y);
-    
 }
 
 void Sprite::Render(float x, float y)
@@ -57,6 +56,24 @@ void Sprite::Render(float x, float y)
     {
         Error("Sprite::Render: Sprite copy to render device has failed");
     }
+}
+
+void Sprite::Render(float x, float y, float Angle, SDL_RendererFlip& Flip)
+{
+    SDL_Rect DestinyRect;
+    DestinyRect.x = x;
+    DestinyRect.y = y;
+    DestinyRect.w = _ClipRect.w;
+    DestinyRect.h = _ClipRect.h;
+    if(SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), _SpriteTexture, &_ClipRect, &DestinyRect, Angle, nullptr, Flip))
+    {
+        Error("Sprite::Render: Sprite copy to render device has failed");
+    }
+}
+
+void Sprite::Render(float Angle, SDL_RendererFlip& Flip)
+{
+    Render(GameObjAssoc.Box.x, GameObjAssoc.Box.y, Angle, Flip);
 }
 
 int Sprite::GetWidth()
