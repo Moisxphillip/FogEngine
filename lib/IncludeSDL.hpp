@@ -7,7 +7,7 @@
  * #include "SDL_include.h"
 */
 
-#define FOG_MYMACHINE
+//#define FOG_MYMACHINE
 
 #ifdef FOG_MYMACHINE
 	/************************************************
