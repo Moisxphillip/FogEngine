@@ -12,6 +12,7 @@ class CameraFollower: public Component
         void Update(float);
         void Render();
         bool Is(std::string);
+        void Start();
 
 };
 

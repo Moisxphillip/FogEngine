@@ -6,11 +6,10 @@ State::State()
     _QuitRequested = false; //Allows loop until quit is requested
     _StateMusic = nullptr; 
     _QuitFade = false;
+	_Started = false;
 	//Init random machine
     Rng.seed(5);
 	Rng.range(0,1000);
-    LoadAssets();
-    _StateMusic->Play(-1, 1000); //Start playing phase theme
 }
 
 State::~State()
@@ -21,6 +20,41 @@ State::~State()
     GameObjVec.clear(); //Gets rid of objects made
 }
 
+void State::Start()
+{
+	LoadAssets();
+	for(int i = 0; i< (int)(GameObjVec.size()); i++)
+    {
+        GameObjVec[i]->Start();
+    }
+    _Started = true;
+}
+
+std::weak_ptr<GameObject> State::AddGameObj(GameObject* NewGameObject)
+{
+	std::shared_ptr<GameObject> NewSharedObj(NewGameObject);
+
+	GameObjVec.push_back(NewSharedObj);//Stores GameObject on scene GameObj vector
+	if(_Started)
+	{
+        GameObjVec[GameObjVec.size()-1]->Start(); //Make it start if it's added during state run
+    }
+	std::weak_ptr<GameObject> NewWeakObj(NewSharedObj) ;
+	return NewWeakObj;
+}
+
+std::weak_ptr<GameObject> State::GetGameObjPtr(GameObject* ComparePtr)
+{
+    for(int i = 0; i< (int)(GameObjVec.size()); i++)
+	{
+		if(GameObjVec[i].get() == ComparePtr)
+		{
+			return GameObjVec[i];
+		}
+	}
+	return {};
+}
+
 bool State::QuitRequested()
 {
     return _QuitRequested; //Program will leave the Game::Run() Loop  if true
@@ -28,22 +62,31 @@ bool State::QuitRequested()
 
 void State::LoadAssets()
 {
-    _StateMusic = new Music(FMUS_STAGE1);//Load the music file for the current state
-	GameObject *BgElement = new GameObject;//Create a gameobject to be associated with the background sprite 
+    GameObject *BgElement = new GameObject;//Create a gameobject to be associated with the background sprite 
     Sprite* StateBg = new Sprite(*BgElement, FIMG_OCEAN);//Load image background
 	CameraFollower *FixedBg = new CameraFollower(*BgElement);
 	BgElement->AddComponent(FixedBg); //Keeps initial coordinates fixed on camera
 	BgElement->AddComponent(StateBg); //registers component on the gameObject
 	BgElement->Box = Rect(0,0,StateBg->GetWidth(),StateBg->GetHeight());//Sets dimensions for the background GameObject
-	
-	GameObjVec.emplace_back(BgElement);//Stores GameObject on scene GameObj vector
-		
+	AddGameObj(BgElement);//Stores GameObject on scene GameObj vector
+
 	//Init TileMap
 	GameObject *StateMap = new GameObject();
 	TileSet *StateTileSet = new TileSet(FOG_TILEWIDTH, FOG_TILEHEIGHT, FIMG_TILESET);
 	TileMap *StateTileMap = new TileMap(*StateMap, FMAP_TILEMAP, StateTileSet);
 	StateMap->AddComponent(StateTileMap);
-	GameObjVec.emplace_back(StateMap);
+	AddGameObj(StateMap);
+
+
+	GameObject *AlienObj = new GameObject();
+	Alien *Et = new Alien(*AlienObj, 2);
+	AlienObj->Box.x = 200;
+	AlienObj->Box.y = 200;
+	AlienObj->AddComponent(Et);
+	AddGameObj(AlienObj);
+
+	_StateMusic = new Music(FMUS_STAGE1);//Load the music file for the current state
+	_StateMusic->Play(-1, 1000); //Start playing phase theme
 }
 
 void State::Update(float Dt)
@@ -77,18 +120,10 @@ void State::Update(float Dt)
 		// Percorrer de trás pra frente pra sempre clicar no objeto mais de cima
 		for(int i = (int)(GameObjVec.size()) - 1; i >= 0; --i) 
 		{
-			// Obtem o ponteiro e casta pra Face.
-			GameObject* go = (GameObject*) GameObjVec[i].get();
-			// Nota: Desencapsular o ponteiro é algo que devemos evitar ao máximo.
-			// O propósito do unique_ptr é manter apenas uma cópia daquele ponteiro,
-			// ao usar get(), violamos esse princípio e estamos menos seguros.
-			// Esse código, assim como a classe Face, é provisório. Futuramente, para
-			// chamar funções de GameObjects, use objectArray[i]->função() direto.
-
-			if(go->Box.Contains(Vec2(float(InputManager::GetInstance().GetMouseX()),
+			if(GameObjVec[i]->Box.Contains(Vec2(float(InputManager::GetInstance().GetMouseX()),
 				float(InputManager::GetInstance().GetMouseY())))) 
 			{
-				Face* face = (Face*)go->GetComponent("Face");
+				Face* face = (Face*)GameObjVec[i]->GetComponent("Face");
 				
 				if ( nullptr != face ) 
 				{
@@ -132,11 +167,12 @@ void State::_AddObject(int x, int y)
 	Enemy->AddComponent(Sfx);
 	Enemy->AddComponent(FaceEnemy);
 
-	GameObjVec.emplace_back(Enemy); //Register GameObject on the GameObjVec for executing with other objects in the scene
+	AddGameObj(Enemy); //Register GameObject on the GameObjVec for executing with other objects in the scene
 }
 
 void State::Render()
 {
+	TileMap* OuterLayer = nullptr;//For keeping outer layer when there's parallax with layers over the reference
 	for(int i = 0; i< (int)(GameObjVec.size()); i++)
 	{
 		if(i == 0)
@@ -148,7 +184,15 @@ void State::Render()
 		{
 			GameObjVec[i]->Box -= Cam.Position + Cam.Speed;
 		}
-
+		if(OuterLayer == nullptr)
+		{
+			OuterLayer = (TileMap*)(GameObjVec[i]->GetComponent("TileMap"));
+		}
 		GameObjVec[i]->Render(); //Calls render procedure for each existing GameObject
+	}
+
+	if(OuterLayer != nullptr)
+	{
+		OuterLayer->Render();//Prints outer layer for real parallax
 	}
 }

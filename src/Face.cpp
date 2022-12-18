@@ -46,6 +46,10 @@ void Face::Render()
 {
 }
 
+void Face::Start()
+{
+}
+
 bool Face::Is(std::string Type)
 {
     return Type == "Face";

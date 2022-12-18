@@ -15,6 +15,10 @@ void Component::Render()
 {
 }
 
+void Component::Start()
+{
+}
+
 void Component::Update(float Dt)
 {
 }

@@ -18,16 +18,18 @@ class Sprite : public Component
         
         void Open(std::string);
         void SetClip(int, int, int, int);
+        int GetWidth();
+        int GetHeight();
+        bool IsOpen();
+        
+        bool Is(std::string);
         void Render();
         void Render(float, float);
         void Render(float, float, float, SDL_RendererFlip&);
         void Render(float, SDL_RendererFlip&);
-        int GetWidth();
-        int GetHeight();
-        bool IsOpen();
-
+        void Start();
         void Update(float);
-        bool Is(std::string);
+        
         
 };
 

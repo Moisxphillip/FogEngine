@@ -15,6 +15,7 @@
 #include <unordered_map>
 #include <fstream>
 #include <iomanip>
+#include <queue>
 
 //SDL
 #define SDL_BASE
@@ -29,7 +30,6 @@
 #include "../lib/Rect.hpp"
 #include "../lib/Settings.hpp"
 #include "../lib/Tools.hpp"
-
 #include "../lib/GameObject.hpp"
 #include "../lib/Component.hpp"
 #include "../lib/Music.hpp"
@@ -45,5 +45,9 @@
 #include "../lib/TileMap.hpp"
 #include "../lib/InputManager.hpp"
 #include "../lib/CameraFollower.hpp"
+#include "../lib/Bullet.hpp"
+#include "../lib/Action.hpp"
+#include "../lib/Alien.hpp"
+#include "../lib/Minion.hpp"
 
 #endif//FOG_INCLUDEALL

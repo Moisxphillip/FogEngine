@@ -6,11 +6,21 @@ GameObject::GameObject()
 {
     Box = Rect(0,0,0,0); //Inits Object Rectangle
     _GameObjDead = false;//Sets as alive for future checks in the gameObject lifetime
+    Started = false;
 }
 
 GameObject::~GameObject()
 {
     _GameObjComponents.clear();//Removes all components 
+}
+
+void GameObject::Start()
+{
+    for(int i = 0; i < (int)(_GameObjComponents.size()); i++)
+    {
+        _GameObjComponents[i]->Start();
+    }
+    Started = true;
 }
 
 void GameObject::Update(float Dt)

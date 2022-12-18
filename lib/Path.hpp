@@ -18,6 +18,7 @@
 //Image
 #define FIMG_OCEAN "./res/img/ocean.jpg"
 #define FIMG_PENGFACE "./res/img/penguinface.png"
+#define FIMG_ALIEN "./res/img/alien.png"
 
 //TileSet
 #define FIMG_TILESET "./res/img/tileset.png"

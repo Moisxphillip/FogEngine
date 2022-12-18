@@ -1,6 +1,5 @@
 #include "../lib/IncludeAll.hpp"
 
-
 Sprite::Sprite(GameObject& GameObj)
 : Component(GameObj)
 {
@@ -40,6 +39,28 @@ void Sprite::SetClip(int x, int y, int w, int h)
     _ClipRect.h = h;
 }
 
+
+int Sprite::GetWidth()
+{
+    return _SpriteWidth;
+}
+
+int Sprite::GetHeight()
+{
+    return _SpriteHeight;
+}
+
+bool Sprite::IsOpen()
+{
+    return (_SpriteTexture != nullptr);
+}
+
+//Inheritance
+bool Sprite::Is(std::string Type)
+{
+    return ("Sprite" == Type);
+}
+
 void Sprite::Render()
 {
     Render(GameObjAssoc.Box.x, GameObjAssoc.Box.y);
@@ -76,26 +97,12 @@ void Sprite::Render(float Angle, SDL_RendererFlip& Flip)
     Render(GameObjAssoc.Box.x, GameObjAssoc.Box.y, Angle, Flip);
 }
 
-int Sprite::GetWidth()
+void Sprite::Start()
 {
-    return _SpriteWidth;
-}
-
-int Sprite::GetHeight()
-{
-    return _SpriteHeight;
-}
-
-bool Sprite::IsOpen()
-{
-    return (_SpriteTexture != nullptr);
 }
 
 void Sprite::Update(float Dt)
 {
 }
 
-bool Sprite::Is(std::string Type)
-{
-    return ("Sprite" == Type);
-}
+

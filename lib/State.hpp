@@ -11,7 +11,8 @@ class State
         bool _QuitFade;
         void _Input();
         void _AddObject(int, int);
-        std::vector<std::unique_ptr<GameObject>> GameObjVec;
+        std::vector<std::shared_ptr<GameObject>> GameObjVec;
+        bool _Started;
 
     public:
         XrandU64 Rng;
@@ -19,6 +20,10 @@ class State
         State();
         ~State();
         Camera Cam;
+
+        void Start();
+        std::weak_ptr<GameObject> AddGameObj(GameObject*);
+        std::weak_ptr<GameObject> GetGameObjPtr(GameObject*);
         bool QuitRequested();
         void LoadAssets();
         void Input();

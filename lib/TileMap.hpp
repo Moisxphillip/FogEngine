@@ -14,6 +14,7 @@ class TileMap: public Component
         int _MapDepth;
         int _RefLayer;
         float _GetLayerMult(int);
+        bool _RefLayerTurn;
 
     public:
         TileMap(GameObject&, std::string, TileSet*);
@@ -29,9 +30,10 @@ class TileMap: public Component
         void SetRefLayer(int);
 
         //inheritance functions
-        void Render();
-        void Update(float);
         bool Is(std::string);
+        void Render();
+        void Start();
+        void Update(float);
     
 };
 

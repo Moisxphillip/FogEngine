@@ -14,10 +14,10 @@ class Face : public Component
         ~Face();
 
         void Damage(int);
-        
-        void Update(float);
-        void Render();
         bool Is(std::string);
+        void Render();
+        void Start();
+        void Update(float);
 
 };
 

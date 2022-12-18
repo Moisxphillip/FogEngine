@@ -16,6 +16,10 @@ void CameraFollower::Render()
 {
 }
 
+void CameraFollower::Start()
+{
+}
+
 bool CameraFollower::Is(std::string Type)
 {
     return (Type == "CameraFollower");

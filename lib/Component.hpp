@@ -13,6 +13,7 @@ class Component
         virtual ~Component();
         virtual void Update(float);
         virtual void Render();
+        virtual void Start();
         virtual bool Is(std::string);
 
 };

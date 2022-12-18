@@ -88,9 +88,9 @@ void Sound::_SoundPosition()
 }
 
 //Inheritance Functions
-void Sound::Update(float Dt)
+bool Sound::Is(std::string Type)
 {
-
+    return Type == "Sound";
 }
 
 void Sound::Render()
@@ -98,7 +98,12 @@ void Sound::Render()
 
 }
 
-bool Sound::Is(std::string Type)
+void Sound::Start()
 {
-    return Type == "Sound";
+
+}
+
+void Sound::Update(float Dt)
+{
+
 }

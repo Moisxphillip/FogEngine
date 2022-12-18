@@ -97,6 +97,7 @@ Game::~Game()
 
 void Game::Run()
 {
+    _GameState->Start();
     while(!_GameState->QuitRequested())    //Wait for quit state
     {
         _CalculateDt();

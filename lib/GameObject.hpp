@@ -13,10 +13,11 @@ class GameObject
 
     public:
         Rect Box;
+        bool Started;
 
         GameObject();
         ~GameObject();
-
+        void Start();
         void Update(float);
         void Render();
         bool IsDead();

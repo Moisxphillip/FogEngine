@@ -16,4 +16,17 @@
 //TODO implement a class that controls the screen info, reading configs
 //from a file or creating a file with the default settings.
 
+
+enum USEDFN //Bitwise checks
+{
+    NONE = 0,
+    UPDATE = 1 << 0,
+    RENDER = 1 << 1
+};
+
+inline USEDFN operator|(USEDFN a, USEDFN b)
+{
+    return static_cast<USEDFN>(static_cast<int>(a) | static_cast<int>(b));
+}
+
 #endif//FOG_SETTINGS

@@ -7,6 +7,7 @@ TileMap::TileMap(GameObject& GameObj, std::string File, TileSet* CurrTileSet)
     this->Load(File);
     this->SetTileSet(CurrTileSet);
     this->_RefLayer = 0;
+    _RefLayerTurn = true;
     
 }
 
@@ -84,14 +85,6 @@ int& TileMap::At(int x, int y, int z = 0)
     return _TileMatrix[(x + _MapWidth*y)+ _LayerArea*z];
 }
 
-void TileMap::Render()
-{
-    for(int l = 0; l<_MapDepth; l++)//Renders each layer separately
-    {
-        RenderLayer(l, GameObjAssoc.Box.x, GameObjAssoc.Box.y);//Following specification hint
-    }
-}
-
 void TileMap::RenderLayer(int Layer, int CamX, int CamY)
 {
     float Parallax = _GetLayerMult(Layer);
@@ -121,11 +114,36 @@ int TileMap::GetDepth()
     return _MapDepth;
 }
 
-void TileMap::Update(float Dt)
-{
-}
-
 bool TileMap::Is(std::string Type)
 {
     return (Type == "TileMap");
+}
+
+void TileMap::Render()
+{
+    if(_RefLayerTurn || _RefLayer+1 == _MapDepth)
+    {
+        for(int l = 0; l <= _RefLayer; l++)//Renders each layer separately
+        {
+            RenderLayer(l, GameObjAssoc.Box.x, GameObjAssoc.Box.y);//Following specification hint
+        }
+        _RefLayerTurn = !_RefLayerTurn;//Changes next render turn
+    }
+    else
+    {
+        for(int l = _RefLayer+1; l < _MapDepth; l++)//Renders each layer separately
+        {
+            RenderLayer(l, GameObjAssoc.Box.x, GameObjAssoc.Box.y);//Following specification hint
+        }
+        _RefLayerTurn = !_RefLayerTurn;//Changes next render turn
+    }
+}
+
+void TileMap::Start()
+{
+
+}
+
+void TileMap::Update(float Dt)
+{
 }
