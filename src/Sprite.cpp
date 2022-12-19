@@ -69,8 +69,8 @@ void Sprite::Render()
 void Sprite::Render(float x, float y)
 {
     SDL_Rect DestinyRect;
-    DestinyRect.x = x;
-    DestinyRect.y = y;
+    DestinyRect.x = x - Game::GetInstance().GetState().Cam.Position.x;
+    DestinyRect.y = y - Game::GetInstance().GetState().Cam.Position.y;
     DestinyRect.w = _ClipRect.w;
     DestinyRect.h = _ClipRect.h;
     if(SDL_RenderCopy(Game::GetInstance().GetRenderer(), _SpriteTexture, &_ClipRect, &DestinyRect))

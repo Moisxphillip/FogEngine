@@ -86,12 +86,12 @@ float Vec2::DistAngle(const Vec2& Vector1, const Vec2& Vector2)
     return ((Vector2-Vector1).Angle());
 }
 
-inline float Vec2::DegToRad(const float& Deg)
+float Vec2::DegToRad(const float& Deg)
 {
     return (Deg*PI_DEG);
 }
 
-inline float Vec2::RadToDeg(const float& Rad)
+float Vec2::RadToDeg(const float& Rad)
 {
     return (Rad*DEG_PI);
 }

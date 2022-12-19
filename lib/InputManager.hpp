@@ -14,6 +14,8 @@
 #define K_A SDLK_a
 #define K_S SDLK_s
 #define K_D SDLK_d
+#define K_B SDLK_b
+#define K_P SDLK_p
 
 #define K_ESC SDLK_ESCAPE
 #define M_LEFT SDL_BUTTON_LEFT

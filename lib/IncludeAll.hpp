@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <climits>
 #include <algorithm>
+#include <map>
 #include <unordered_map>
 #include <fstream>
 #include <iomanip>
@@ -46,7 +47,7 @@
 #include "../lib/InputManager.hpp"
 #include "../lib/CameraFollower.hpp"
 #include "../lib/Bullet.hpp"
-#include "../lib/Action.hpp"
+#include "../lib/Generic.hpp"
 #include "../lib/Alien.hpp"
 #include "../lib/Minion.hpp"
 

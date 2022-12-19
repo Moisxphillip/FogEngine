@@ -25,7 +25,7 @@ float TileMap::_GetLayerMult(int CurrLayer)
         return 1.0f/(-CurrLayer);
     }
 
-    CurrLayer++;
+    //CurrLayer++;
     return (1.0f*CurrLayer); 
 }
 
@@ -125,7 +125,7 @@ void TileMap::Render()
     {
         for(int l = 0; l <= _RefLayer; l++)//Renders each layer separately
         {
-            RenderLayer(l, GameObjAssoc.Box.x, GameObjAssoc.Box.y);//Following specification hint
+            RenderLayer(l, -Game::GetInstance().GetState().Cam.Position.x, -Game::GetInstance().GetState().Cam.Position.y);//Following specification hint
         }
         _RefLayerTurn = !_RefLayerTurn;//Changes next render turn
     }
@@ -133,7 +133,7 @@ void TileMap::Render()
     {
         for(int l = _RefLayer+1; l < _MapDepth; l++)//Renders each layer separately
         {
-            RenderLayer(l, GameObjAssoc.Box.x, GameObjAssoc.Box.y);//Following specification hint
+            RenderLayer(l, -Game::GetInstance().GetState().Cam.Position.x, -Game::GetInstance().GetState().Cam.Position.y);//Following specification hint
         }
         _RefLayerTurn = !_RefLayerTurn;//Changes next render turn
     }

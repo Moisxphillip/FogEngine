@@ -140,10 +140,10 @@ bool InputManager::IsMouseDown(int Switch)
 
 int InputManager::GetMouseX()
 {
-    return _MouseX;
+    return _MouseX + Game::GetInstance().GetState().Cam.Position.x;
 }
 
 int InputManager::GetMouseY()
 {
-    return _MouseY;
+    return _MouseY + Game::GetInstance().GetState().Cam.Position.y;
 }

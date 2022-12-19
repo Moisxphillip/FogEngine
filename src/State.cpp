@@ -7,6 +7,7 @@ State::State()
     _StateMusic = nullptr; 
     _QuitFade = false;
 	_Started = false;
+	_FaceEnabled = false;//Disables face input
 	//Init random machine
     Rng.seed(5);
 	Rng.range(0,1000);
@@ -62,6 +63,7 @@ bool State::QuitRequested()
 
 void State::LoadAssets()
 {
+	//Basic state elements
     GameObject *BgElement = new GameObject;//Create a gameobject to be associated with the background sprite 
     Sprite* StateBg = new Sprite(*BgElement, FIMG_OCEAN);//Load image background
 	CameraFollower *FixedBg = new CameraFollower(*BgElement);
@@ -77,14 +79,14 @@ void State::LoadAssets()
 	StateMap->AddComponent(StateTileMap);
 	AddGameObj(StateMap);
 
-
+	//Alien
 	GameObject *AlienObj = new GameObject();
-	Alien *Et = new Alien(*AlienObj, 2);
-	AlienObj->Box.x = 200;
-	AlienObj->Box.y = 200;
+	Alien *Et = new Alien(*AlienObj, 4);
+	AlienObj->Box.SetCenter(Vec2(512,300));
 	AlienObj->AddComponent(Et);
 	AddGameObj(AlienObj);
 
+	//Play music
 	_StateMusic = new Music(FMUS_STAGE1);//Load the music file for the current state
 	_StateMusic->Play(-1, 1000); //Start playing phase theme
 }
@@ -104,18 +106,35 @@ void State::Update(float Dt)
 		_QuitRequested = true;
 	}
 
+	//Cam following object
+	if(InputManager::GetInstance().KeyPress(SDLK_t))
+	{
+		if(!Cam.IsFollowing())
+		{
+			Cam.Follow(GameObjVec[2].get()); 
+		}
+		else
+		{
+			Cam.Unfollow();
+		}
+	}
+
 	Cam.Update(Dt);
 
-	if(InputManager::GetInstance().KeyPress(K_SPACE)) 
+	if(InputManager::GetInstance().KeyPress(K_P))
+	{
+		_FaceEnabled = !_FaceEnabled; //Enables the old face input
+	}
+	else if(_FaceEnabled && InputManager::GetInstance().KeyPress(K_SPACE)) 
 	{
 		Vec2 NewRot(200, 0);
-		NewRot.Rotate(-M_PI + M_PI*(Rng.gen()/500.0));
+		NewRot.Rotate(-M_PI + M_PI*(Rng.gen()/314.15));
 		Vec2 Pos(InputManager::GetInstance().GetMouseX(),
 			InputManager::GetInstance().GetMouseY());
 		NewRot = NewRot + Pos; //Rotate object
 		_AddObject((int)NewRot.x, (int)NewRot.y);
 	}
-	else if(InputManager::GetInstance().MousePress(M_LEFT)) 
+	else if(_FaceEnabled && InputManager::GetInstance().MousePress(M_LEFT)) 
 	{
 		// Percorrer de trás pra frente pra sempre clicar no objeto mais de cima
 		for(int i = (int)(GameObjVec.size()) - 1; i >= 0; --i) 
@@ -136,6 +155,12 @@ void State::Update(float Dt)
 	}
 	//End of input
 
+	//Calls updates for contained objects and remove dead objects
+	GameObjUpdate(Dt);
+}
+
+void State::GameObjUpdate(float Dt)
+{
 	for(int i = 0; i< (int)(GameObjVec.size()); i++)
 	{
 		GameObjVec[i]->Update(Dt);//Updates based on input and Dt
@@ -149,7 +174,6 @@ void State::Update(float Dt)
 			i--;
 		}
 	}
-
 }
 
 void State::_AddObject(int x, int y)
@@ -175,15 +199,6 @@ void State::Render()
 	TileMap* OuterLayer = nullptr;//For keeping outer layer when there's parallax with layers over the reference
 	for(int i = 0; i< (int)(GameObjVec.size()); i++)
 	{
-		if(i == 0)
-		{
-			GameObjVec[0]->Box.x = 0;
-			GameObjVec[0]->Box.y = 0;
-		}
-		else
-		{
-			GameObjVec[i]->Box -= Cam.Position + Cam.Speed;
-		}
 		if(OuterLayer == nullptr)
 		{
 			OuterLayer = (TileMap*)(GameObjVec[i]->GetComponent("TileMap"));

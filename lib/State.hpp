@@ -13,7 +13,8 @@ class State
         void _AddObject(int, int);
         std::vector<std::shared_ptr<GameObject>> GameObjVec;
         bool _Started;
-
+        bool _FaceEnabled;
+        
     public:
         XrandU64 Rng;
 
@@ -28,6 +29,7 @@ class State
         void LoadAssets();
         void Input();
         void Update(float);
+        void GameObjUpdate(float);
         void Render();
 
 };

@@ -7,7 +7,7 @@ class Camera
 {
     private:
         GameObject* _Focus;
-
+        
     public:
         Vec2 Position;
         Vec2 Speed;
@@ -15,6 +15,7 @@ class Camera
         Camera();
         
         void Follow(GameObject*);
+        bool IsFollowing();
         void Unfollow();
         void Update(float);
 

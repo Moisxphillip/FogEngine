@@ -26,6 +26,12 @@ Vec2 Rect::Center()
     return Vec2(x+(w/2), y+(h/2));
 }
 
+void Rect::SetCenter(Vec2 Coord)
+{
+    this->x = Coord.x - w/2;
+    this->y = Coord.y - h/2;
+}
+
 float Rect::DistCenters(const Rect& Rectangle)
 {
     return (this->CenterV - Rectangle.CenterV).Magnitude();

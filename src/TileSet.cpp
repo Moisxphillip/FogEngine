@@ -37,7 +37,7 @@ void TileSet::RenderTile(uint32_t Index, float x, float y)
     } 
     if (int(Index) >= _MaxTiles) //Just in case someone asks for tiles outside the boundaries
     {
-        Error("TileSet::RenderTile: Tile requested exceded the max number of tiles on current Set");//TODO check if tiles are being correctly displayed
+        Error("TileSet::RenderTile: Tile requested exceded the max number of tiles on current Set");
     }
     Index--;
     //Gets the position of needed sprite section

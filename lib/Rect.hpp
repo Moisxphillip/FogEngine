@@ -17,6 +17,7 @@ class Rect
         //Functions
         void AddVec2(const Vec2&);
         Vec2 Center();
+        void SetCenter(Vec2);
         float DistCenters(const Rect&);
         bool Contains(const Vec2&);
         //+, -, <<

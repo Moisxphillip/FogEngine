@@ -22,6 +22,7 @@ class Alien : public Component
         };
         Vec2 _Speed;
         int _HP;
+        int _NumMinions;
         Action _AlienAction;
         std::queue<Action> _AlienTasks;
         std::vector<std::weak_ptr<GameObject>> _MinionVec;
