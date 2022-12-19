@@ -8,18 +8,18 @@
 *///--------------------------------------
 
 //Music
-//#define FMUS_STAGE1 "./res/audio/stageState.ogg"
-#define FMUS_STAGE1 "./res/audio/fungal_mantis.ogg"
+#define FMUS_STAGE1 "./res/audio/stageState.ogg"
+//#define FMUS_STAGE1 "./res/audio/fungal_mantis.ogg"
 
 //Audio
-//#define FAUD_BOOM "./res/audio/boom.wav"
-#define FAUD_BOOM "./res/audio/snore.ogg"
+#define FAUD_BOOM "./res/audio/boom.wav"
+//#define FAUD_BOOM "./res/audio/snore.ogg"
 
 //Image
 #define FIMG_OCEAN "./res/img/ocean.jpg"
 #define FIMG_PENGFACE "./res/img/penguinface.png"
-#define FIMG_ALIEN "./res/img/alien.png"
-#define FIMG_MINION "./res/img/minion.png"
+#define FIMG_ALIEN "./res/img/alien2.png"
+#define FIMG_MINION "./res/img/minion2.png"
 #define FIMG_BULLET "./res/img/minionbullet1.png"
 
 //TileSet
