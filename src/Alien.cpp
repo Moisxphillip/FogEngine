@@ -49,6 +49,10 @@ void Alien::Start()
 
 void Alien::Update(float Dt)
 {
+    //Alien Rotation
+    GameObjAssoc.Angle += (ROTFRAC/2)*Dt;
+
+
     if(InputManager::GetInstance().MousePress(M_LEFT))
     {
         Action NewAction(Action::SHOOT, InputManager::GetInstance().GetMouseX(),
@@ -65,6 +69,7 @@ void Alien::Update(float Dt)
 
     if(!_AlienTasks.empty())
     {
+
         Vec2 Distance = GameObjAssoc.Box.Center() - _AlienTasks.front().Position;
         if(_AlienTasks.front().Type == Action::MOVE)
         {
@@ -74,8 +79,6 @@ void Alien::Update(float Dt)
             GameObjAssoc.Box -= Direction;
             if(Direction.Magnitude() >= Distance.Magnitude())
             {
-                // GameObjAssoc.Box.x += _Speed.x* Dt;
-                // GameObjAssoc.Box.y += _Speed.y* Dt;
                 GameObjAssoc.Box += Distance;
                 _AlienTasks.pop();
             }
@@ -86,7 +89,6 @@ void Alien::Update(float Dt)
         {
             float Closest = 1e7; //A big number for quick substitution
             int Index = 0;
-            float Angle = 0;
 
             for(int i = 0; i < _NumMinions; i++)
             {
@@ -96,24 +98,21 @@ void Alien::Update(float Dt)
                 {
                     Closest = Dist;
                     Index = i;
-                    Angle = _MinionVec[i].lock()->Box.Center().DistAngle(_AlienTasks.front().Position);
                 }
             }
-            std::cout << Vec2::RadToDeg(Angle) << '\n';//TODO remove
-            //Create gameobject for a projectile
-            GameObject* GoBullet= new GameObject;
-            GoBullet->Box.SetCenter(_MinionVec[Index].lock()->Box.Center());
-            Bullet* Projectile = new Bullet(*GoBullet, Angle, 150.f, 10, 450.f, FIMG_BULLET);
-            GoBullet->AddComponent(Projectile);
-            Game::GetInstance().GetState().AddGameObj(GoBullet);
-
+            Minion* ChosenToShoot = (Minion*) _MinionVec[Index].lock()->GetComponent("Minion");
+            ChosenToShoot->Shoot(_AlienTasks.front().Position);
             _AlienTasks.pop();
         }
     }
 
     if(_HP == 0)
     {
-        GameObjAssoc.RequestDelete(); //TODO test if alien deletion is happening as expected
+        for(int i = 0; i < _NumMinions; i++)
+        {
+            _MinionVec[i].lock()->RequestDelete(); //Request delete for minions
+        }
+        GameObjAssoc.RequestDelete(); //Request delete for alien
     }
 }
 

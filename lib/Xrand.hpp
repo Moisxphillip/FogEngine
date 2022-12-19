@@ -9,6 +9,7 @@ class XrandU64 //Generates unsigned integers between 0x1 and 0xFFFFFFFFFFFFFFFF
 {
     public:
         XrandU64();
+        XrandU64(uint64_t);
         void seed(uint64_t);
         void range(uint64_t, uint64_t);
         uint64_t min();
@@ -27,6 +28,8 @@ class XrandU64 //Generates unsigned integers between 0x1 and 0xFFFFFFFFFFFFFFFF
 class XrandF32 //Generates float numbers between 0 and 1
 {
     public:
+        XrandF32();
+        XrandF32(uint64_t);
         void seed(uint64_t);
         float gen();
         float min(){return 0.0;};//Minimum value generated

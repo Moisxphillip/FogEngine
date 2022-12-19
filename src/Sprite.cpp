@@ -4,6 +4,7 @@ Sprite::Sprite(GameObject& GameObj)
 : Component(GameObj)
 {
     _SpriteTexture = nullptr;
+    _Scale = Vec2(1,1);
 }
 
 Sprite::Sprite(GameObject& GameObj, std::string File)
@@ -42,12 +43,22 @@ void Sprite::SetClip(int x, int y, int w, int h)
 
 int Sprite::GetWidth()
 {
-    return _SpriteWidth;
+    return (_SpriteWidth * _Scale.x);
 }
 
 int Sprite::GetHeight()
 {
-    return _SpriteHeight;
+    return (_SpriteHeight * _Scale.y);
+}
+
+void Sprite::SetScale(float ScaleX, float ScaleY)
+{
+    _Scale = Vec2(ScaleX, ScaleY);
+}
+
+Vec2 Sprite::GetScale()
+{
+    return _Scale;
 }
 
 bool Sprite::IsOpen()
@@ -68,33 +79,27 @@ void Sprite::Render()
 
 void Sprite::Render(float x, float y)
 {
+    Render(x, y, GameObjAssoc.Angle);
+}
+
+void Sprite::Render(float x, float y, float Angle)
+{
     SDL_Rect DestinyRect;
     DestinyRect.x = x - Game::GetInstance().GetState().Cam.Position.x;
     DestinyRect.y = y - Game::GetInstance().GetState().Cam.Position.y;
-    DestinyRect.w = _ClipRect.w;
-    DestinyRect.h = _ClipRect.h;
-    if(SDL_RenderCopy(Game::GetInstance().GetRenderer(), _SpriteTexture, &_ClipRect, &DestinyRect))
+    DestinyRect.w = _ClipRect.w  * _Scale.x;
+    DestinyRect.h = _ClipRect.h * _Scale.y;
+
+
+    // SDL_Rect DestinyRect;
+    // DestinyRect.x = x;
+    // DestinyRect.y = y;
+    // DestinyRect.w = _ClipRect.w;
+    // DestinyRect.h = _ClipRect.h;
+    if(SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), _SpriteTexture, &_ClipRect, &DestinyRect, Vec2::RadToDeg(Angle), nullptr, SDL_FLIP_NONE))
     {
         Error("Sprite::Render: Sprite copy to render device has failed");
     }
-}
-
-void Sprite::Render(float x, float y, float Angle, SDL_RendererFlip& Flip)
-{
-    SDL_Rect DestinyRect;
-    DestinyRect.x = x;
-    DestinyRect.y = y;
-    DestinyRect.w = _ClipRect.w;
-    DestinyRect.h = _ClipRect.h;
-    if(SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), _SpriteTexture, &_ClipRect, &DestinyRect, Angle, nullptr, Flip))
-    {
-        Error("Sprite::Render: Sprite copy to render device has failed");
-    }
-}
-
-void Sprite::Render(float Angle, SDL_RendererFlip& Flip)
-{
-    Render(GameObjAssoc.Box.x, GameObjAssoc.Box.y, Angle, Flip);
 }
 
 void Sprite::Start()

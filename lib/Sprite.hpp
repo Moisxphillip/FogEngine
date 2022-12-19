@@ -10,6 +10,7 @@ class Sprite : public Component
         int _SpriteWidth;
         int _SpriteHeight;
         SDL_Rect _ClipRect;
+        Vec2 _Scale;
 
     public:
         Sprite(GameObject&);
@@ -20,16 +21,16 @@ class Sprite : public Component
         void SetClip(int, int, int, int);
         int GetWidth();
         int GetHeight();
+        void SetScale(float, float);
+        Vec2 GetScale();
         bool IsOpen();
         
         bool Is(std::string);
         void Render();
         void Render(float, float);
-        void Render(float, float, float, SDL_RendererFlip&);
-        void Render(float, SDL_RendererFlip&);
+        void Render(float, float, float);
         void Start();
         void Update(float);
-        
         
 };
 

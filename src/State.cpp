@@ -81,7 +81,7 @@ void State::LoadAssets()
 
 	//Alien
 	GameObject *AlienObj = new GameObject();
-	Alien *Et = new Alien(*AlienObj, 4);
+	Alien *Et = new Alien(*AlienObj, FOG_NUMMINIONS);
 	AlienObj->Box.SetCenter(Vec2(512,300));
 	AlienObj->AddComponent(Et);
 	AddGameObj(AlienObj);

@@ -11,6 +11,7 @@ Bullet::Bullet(GameObject& GameObj, float Angle, float Speed, int Damage, float 
     
     _Speed = Vec2(1,0)*Speed;
     _Speed.Rotate(Angle);
+    GameObjAssoc.Angle = Angle;
     _DistanceLeft = MaxDistance;
     
     _Damage = Damage;

@@ -6,6 +6,7 @@ Generic::Generic(GameObject& GameObj, std::string Type)
     _Type = Type;
     this->Started = false;
     _Render = nullptr;
+    _Start = nullptr;
     _Update = nullptr;
 }
 
@@ -39,7 +40,7 @@ void Generic::Render()
 
 void Generic::Start()
 {
-    if(_Update != nullptr)
+    if(_Start != nullptr)
     {
         _Start(this);
         this->Started = true;

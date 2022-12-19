@@ -12,6 +12,14 @@
 #define FOG_KEYARR 416
 #define FOG_BUTTONARR 6
 
+//
+#define ROTFRAC (M_PI/4)
+
+#define FOG_BULLETSPD 200.f
+#define FOG_BULLETDIST 500.f
+#define FOG_BULLETDMG 10
+#define FOG_NUMMINIONS 5
+
 
 //TODO implement a class that controls the screen info, reading configs
 //from a file or creating a file with the default settings.
@@ -20,8 +28,9 @@
 enum USEDFN //Bitwise checks
 {
     NONE = 0,
-    UPDATE = 1 << 0,
-    RENDER = 1 << 1
+    RENDER = 1 << 0,
+    START =  1 << 1,
+    UPDATE = 1 << 2
 };
 
 inline USEDFN operator|(USEDFN a, USEDFN b)

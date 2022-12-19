@@ -7,6 +7,7 @@ GameObject::GameObject()
     Box = Rect(0,0,0,0); //Inits Object Rectangle
     _GameObjDead = false;//Sets as alive for future checks in the gameObject lifetime
     Started = false;
+    Angle = 0;
 }
 
 GameObject::~GameObject()

@@ -14,6 +14,7 @@ class GameObject
     public:
         Rect Box;
         bool Started;
+        float Angle;
 
         GameObject();
         ~GameObject();

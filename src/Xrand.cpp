@@ -6,6 +6,11 @@ XrandU64::XrandU64()
     seed(0);
     range(0, ULLONG_MAX);
 }
+XrandU64::XrandU64(uint64_t Seed)//Sets seed at start
+{
+    seed(Seed);
+    range(0, ULLONG_MAX);
+}
 
 void XrandU64::seed(uint64_t seed)//Takes an unsigned integer and sets as the seed based in the 1st state from the shiftmix
 {
@@ -45,12 +50,12 @@ uint64_t XrandU64::gen()//Returns an unsigned integer between the range specifie
     return res;        
 }
 
-inline uint64_t XrandU64::min()//Returns the minimum value from the set range
+uint64_t XrandU64::min()//Returns the minimum value from the set range
 {
     return minimum;
 }
 
-inline uint64_t XrandU64::max()//Returns the maximum value from the set range
+uint64_t XrandU64::max()//Returns the maximum value from the set range
 {
     return dist - 1 + minimum;
 }
@@ -81,7 +86,16 @@ uint64_t XrandU64::___xorshift64star(uint64_t state)//xorshift64s, variant A_1(1
 }
 
 //Floating Point Generation
-inline float XrandF32::gen()//Returns a floating point number between 0.0 and 1.0
+XrandF32::XrandF32()
+{
+}
+
+XrandF32::XrandF32(uint64_t Seed)//Sets seed at start
+{
+    _xor64.seed(Seed);
+}
+
+float XrandF32::gen()//Returns a floating point number between 0.0 and 1.0
 {
     return _xor64.gen()/18446744073709551616.0; 
 }
