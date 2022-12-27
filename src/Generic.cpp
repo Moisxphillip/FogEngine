@@ -1,7 +1,7 @@
 #include "../lib/IncludeAll.hpp"
 
 Generic::Generic(GameObject& GameObj, std::string Type)
-: Component(GameObj)
+: Component(GameObj), Angle(GameObjAssoc.Angle), Box(GameObjAssoc.Box)
 {
     _Type = Type;
     this->Started = false;
@@ -25,6 +25,12 @@ void Generic::SetUpdate(void(*Update)(float, Generic*))
     _Update = Update;
 }
 
+void Generic::RequestDelete()
+{
+    this->GameObjAssoc.RequestDelete();
+}
+
+
 bool Generic::Is(std::string Type)
 {
     return (Type == _Type);
@@ -40,6 +46,7 @@ void Generic::Render()
 
 void Generic::Start()
 {
+
     if(_Start != nullptr)
     {
         _Start(this);

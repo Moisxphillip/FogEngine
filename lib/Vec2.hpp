@@ -19,7 +19,7 @@ class Vec2
         float Distance(const Vec2&);
         Vec2 DistVec2(const Vec2&);
         float DistAngle(const Vec2&);
-        void Rotate(const float&);
+        Vec2 Rotate(const float&);
         //Useful functions for external use
         static float Dot(const Vec2&, const Vec2&);
         static float Distance(const Vec2&, const Vec2&);

@@ -10,8 +10,9 @@ class State
         bool _QuitRequested;
         bool _QuitFade;
         void _Input();
-        void _AddObject(int, int);
+        void _FadeOut();
         std::vector<std::shared_ptr<GameObject>> GameObjVec;
+        std::vector<std::shared_ptr<GameObject>> LateRenderVec;
         bool _Started;
         bool _FaceEnabled;
         
@@ -24,6 +25,7 @@ class State
 
         void Start();
         std::weak_ptr<GameObject> AddGameObj(GameObject*);
+        std::weak_ptr<GameObject> AddLateRenderObj(GameObject*);
         std::weak_ptr<GameObject> GetGameObjPtr(GameObject*);
         bool QuitRequested();
         void LoadAssets();

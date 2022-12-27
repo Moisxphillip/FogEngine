@@ -30,7 +30,7 @@ Vec2 Vec2::Normalized()
     float Mag = this->Magnitude();
     if(Mag == 0)
     {
-        std::cout << "Vec2::Normalized: Division by zero must not occur"; //TODO change to Error() from Tools.hpp when joined to main project
+        Error("Vec2::Normalized: Division by zero must not occur");
         return Vec2(0,0);
     }
     return Vec2(this->x/Mag, this->y/Mag);
@@ -56,13 +56,15 @@ float Vec2::DistAngle(const Vec2& Vector)
     return ((Vector - *this).Angle());
 }
 
-void Vec2::Rotate(const float& Rad)
+Vec2 Vec2::Rotate(const float& Rad)
 {
     float Sin = sin(Rad), Cos = cos(Rad);
     float x = this->x*Cos + this->y*Sin;
     float y = this->y*Cos - this->x*Sin;
     this->x = x;
     this->y = y;
+    
+    return *this;
 }
 
 //________________________________________

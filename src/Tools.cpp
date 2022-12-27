@@ -12,3 +12,14 @@ int Fps(int Rate) //Takes intended frames per second and returns approximated ti
 {
     return 1000/Rate;
 }
+
+double WrapMax(double Val, double Max)
+{
+    return fmod(Max + fmod(Val, Max), Max);
+}
+
+//Val -> [Min,Max)
+double WrapMinMax(double Val, double Min, double Max)
+{
+    return Min + WrapMax(Val - Min, Max - Min);
+}

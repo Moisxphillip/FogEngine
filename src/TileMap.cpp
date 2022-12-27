@@ -22,7 +22,7 @@ float TileMap::_GetLayerMult(int CurrLayer)
     if(CurrLayer < 0)
     {
         CurrLayer--;
-        return 1.0f/(-CurrLayer);
+        return 1.0f/(CurrLayer);
     }
 
     //CurrLayer++;
@@ -88,9 +88,27 @@ int& TileMap::At(int x, int y, int z = 0)
 void TileMap::RenderLayer(int Layer, int CamX, int CamY)
 {
     float Parallax = _GetLayerMult(Layer);
-    for(int y = 0; y < _MapHeight; y++)//iterates through rows
+    
+    /* render formula is not properly working with layers below base, must fix 
+    -- boundaries. For now, keep the variables as they worked before intervention.
+    */
+
+    //Start render from tile on cam position //TODO IMPROVE LAYER LOGIC
+    int StartX = 0,//-CamX/_CurrTileSet->GetTileWidth(), 
+    StartY = 0;//-CamY/_CurrTileSet->GetTileHeight();
+    //(StartX < 0 ? StartX = 0 : StartX);
+    //(StartY < 0 ? StartY = 0 : StartY);
+    
+    //Render until most far tile inside view
+    int EndX = _MapWidth,//((-CamX+(FOG_SCRWIDTH*(Parallax+1))))/_CurrTileSet->GetTileWidth()+1,
+    EndY = _MapHeight;//((-CamY+FOG_SCRHEIGHT*(Parallax+1)))/_CurrTileSet->GetTileHeight()+1;
+    //(EndX >= _MapWidth ? EndX = _MapWidth : EndX);
+    //(EndY >= _MapHeight ? EndY = _MapHeight : EndY);
+
+
+    for(int y = StartY; y < EndY; y++)//iterates through rows
     {
-        for(int x = 0; x < _MapWidth; x++)//iterates through columns
+        for(int x = StartX; x < EndX; x++)//iterates through columns
         {
             _CurrTileSet->RenderTile(At(x, y, Layer), //finds tile identifier
                 float(CamX*Parallax + x*_CurrTileSet->GetTileWidth()), //Crop+positioning
@@ -121,22 +139,21 @@ bool TileMap::Is(std::string Type)
 
 void TileMap::Render()
 {
-    if(_RefLayerTurn || _RefLayer+1 == _MapDepth)
+    if(_RefLayerTurn)
     {
         for(int l = 0; l <= _RefLayer; l++)//Renders each layer separately
         {
             RenderLayer(l, -Game::GetInstance().GetState().Cam.Position.x, -Game::GetInstance().GetState().Cam.Position.y);//Following specification hint
         }
-        _RefLayerTurn = !_RefLayerTurn;//Changes next render turn
     }
-    else
+    else if(_RefLayer+1 != _MapDepth)
     {
         for(int l = _RefLayer+1; l < _MapDepth; l++)//Renders each layer separately
         {
             RenderLayer(l, -Game::GetInstance().GetState().Cam.Position.x, -Game::GetInstance().GetState().Cam.Position.y);//Following specification hint
         }
-        _RefLayerTurn = !_RefLayerTurn;//Changes next render turn
     }
+    _RefLayerTurn = !_RefLayerTurn;//Changes next render turn
 }
 
 void TileMap::Start()

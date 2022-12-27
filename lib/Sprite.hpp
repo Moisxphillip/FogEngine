@@ -11,10 +11,16 @@ class Sprite : public Component
         int _SpriteHeight;
         SDL_Rect _ClipRect;
         Vec2 _Scale;
+        int _FrameCount;
+        int _CurrFrame;
+        float _TimeElapsed;
+        float _FrameTime;
+        Flip _Orientation;
 
     public:
         Sprite(GameObject&);
         Sprite(GameObject&, std::string);
+        Sprite(GameObject&, std::string, int, float);
         ~Sprite();
         
         void Open(std::string);
@@ -24,6 +30,12 @@ class Sprite : public Component
         void SetScale(float, float);
         Vec2 GetScale();
         bool IsOpen();
+
+        void SetFrame(int);
+        void SetFrameCount(int);
+        void SetFrameTime(float);
+        void SetFlip(Flip);
+        Flip GetFlip();
         
         bool Is(std::string);
         void Render();

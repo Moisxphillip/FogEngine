@@ -38,7 +38,6 @@
 #include "../lib/Camera.hpp"
 #include "../lib/State.hpp"
 #include "../lib/Game.hpp"
-#include "../lib/Face.hpp"
 #include "../lib/Path.hpp"
 #include "../lib/Sprite.hpp"
 #include "../lib/Resources.hpp"
@@ -50,5 +49,9 @@
 #include "../lib/Generic.hpp"
 #include "../lib/Alien.hpp"
 #include "../lib/Minion.hpp"
+#include "../lib/PenguinCannon.hpp"
+#include "../lib/PenguinBody.hpp"
+#include "../lib/Timer.hpp"
+#include "../lib/Collider.hpp"
 
 #endif//FOG_INCLUDEALL

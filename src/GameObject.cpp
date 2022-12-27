@@ -29,7 +29,12 @@ void GameObject::Update(float Dt)
     for (int i = 0; i < (int)(_GameObjComponents.size()); i++)
     {
         _GameObjComponents[i]->Update(Dt);//Calls update from each component belonging to this GameObject
-    }  
+    }
+
+    if(Angle< -M_PI || Angle >M_PI)//Wrapper for avoiding unlimited growth
+    {
+        Angle = WrapMinMax(Angle, -M_PI, M_PI);
+    }
 }
 
 void GameObject::Render()

@@ -4,7 +4,7 @@
 Bullet::Bullet(GameObject& GameObj, float Angle, float Speed, int Damage, float MaxDistance, std::string Texture)
 : Component(GameObj)
 {
-    Sprite* SpBullet = new Sprite(GameObj, Texture);
+    Sprite* SpBullet = new Sprite(GameObj, Texture, 3, 0.1);
     GameObjAssoc.AddComponent(SpBullet);
     GameObjAssoc.Box.h = SpBullet->GetHeight();
     GameObjAssoc.Box.w = SpBullet->GetWidth();

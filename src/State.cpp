@@ -19,6 +19,7 @@ State::~State()
     _StateMusic = nullptr;
 
     GameObjVec.clear(); //Gets rid of objects made
+    LateRenderVec.clear(); //Gets rid of objects made
 }
 
 void State::Start()
@@ -36,6 +37,19 @@ std::weak_ptr<GameObject> State::AddGameObj(GameObject* NewGameObject)
 	std::shared_ptr<GameObject> NewSharedObj(NewGameObject);
 
 	GameObjVec.push_back(NewSharedObj);//Stores GameObject on scene GameObj vector
+	if(_Started)
+	{
+        GameObjVec[GameObjVec.size()-1]->Start(); //Make it start if it's added during state run
+    }
+	std::weak_ptr<GameObject> NewWeakObj(NewSharedObj) ;
+	return NewWeakObj;
+}
+
+std::weak_ptr<GameObject> State::AddLateRenderObj(GameObject* NewGameObject)
+{
+	std::shared_ptr<GameObject> NewSharedObj(NewGameObject);
+
+	LateRenderVec.push_back(NewSharedObj);//Stores new pointer on Late Render vector
 	if(_Started)
 	{
         GameObjVec[GameObjVec.size()-1]->Start(); //Make it start if it's added during state run
@@ -78,6 +92,7 @@ void State::LoadAssets()
 	TileMap *StateTileMap = new TileMap(*StateMap, FMAP_TILEMAP, StateTileSet);
 	StateMap->AddComponent(StateTileMap);
 	AddGameObj(StateMap);
+	AddLateRenderObj(StateMap);
 
 	//Alien
 	GameObject *AlienObj = new GameObject();
@@ -99,6 +114,7 @@ void State::Update(float Dt)
 	{
 		_StateMusic->Stop(1000);
 		_QuitFade = true;
+		_FadeOut();
 	}
 
 	if(_QuitFade && !Mix_PlayingMusic())//Ensures fadeout finishes before closing
@@ -123,36 +139,9 @@ void State::Update(float Dt)
 
 	if(InputManager::GetInstance().KeyPress(K_P))
 	{
-		_FaceEnabled = !_FaceEnabled; //Enables the old face input
+		_FadeOut();
 	}
-	else if(_FaceEnabled && InputManager::GetInstance().KeyPress(K_SPACE)) 
-	{
-		Vec2 NewRot(200, 0);
-		NewRot.Rotate(-M_PI + M_PI*(Rng.gen()/314.15));
-		Vec2 Pos(InputManager::GetInstance().GetMouseX(),
-			InputManager::GetInstance().GetMouseY());
-		NewRot = NewRot + Pos; //Rotate object
-		_AddObject((int)NewRot.x, (int)NewRot.y);
-	}
-	else if(_FaceEnabled && InputManager::GetInstance().MousePress(M_LEFT)) 
-	{
-		// Percorrer de trás pra frente pra sempre clicar no objeto mais de cima
-		for(int i = (int)(GameObjVec.size()) - 1; i >= 0; --i) 
-		{
-			if(GameObjVec[i]->Box.Contains(Vec2(float(InputManager::GetInstance().GetMouseX()),
-				float(InputManager::GetInstance().GetMouseY())))) 
-			{
-				Face* face = (Face*)GameObjVec[i]->GetComponent("Face");
-				
-				if ( nullptr != face ) 
-				{
-					// Aplica dano
-					face->Damage(int(Rng.gen()) % 10 + 10);
-					break;
-				}
-			}
-		}
-	}
+
 	//End of input
 
 	//Calls updates for contained objects and remove dead objects
@@ -161,6 +150,7 @@ void State::Update(float Dt)
 
 void State::GameObjUpdate(float Dt)
 {
+	//Game Object Updates
 	for(int i = 0; i< (int)(GameObjVec.size()); i++)
 	{
 		GameObjVec[i]->Update(Dt);//Updates based on input and Dt
@@ -174,40 +164,78 @@ void State::GameObjUpdate(float Dt)
 			i--;
 		}
 	}
+
+	//Late Render Updates
+	for(int i = 0; i< (int)(LateRenderVec.size()); i++)
+	{
+		LateRenderVec[i]->Update(Dt); //Calls render procedure for the late stuff
+	}
+
+	for(int i = 0; i< (int)(LateRenderVec.size()); i++)
+	{
+		if(LateRenderVec[i]->IsDead())
+		{
+			LateRenderVec.erase(LateRenderVec.begin()+i); //Removes stuff discarded by RequestDelete()
+			i--;
+		}
+	}
 }
 
-void State::_AddObject(int x, int y)
+void State::_FadeOut()
 {
-	GameObject *Enemy = new GameObject; //Create a base object for holding the components
-	Sprite *EnemySprite = new Sprite(*Enemy, FIMG_PENGFACE);//Create a Sprite
-	Enemy->Box = Rect(x-(EnemySprite->GetWidth()>>1),y-(EnemySprite->GetHeight()>>1),
-	        		EnemySprite->GetWidth(),EnemySprite->GetHeight());//Sets Sprite dimensions
-	Sound *Sfx = new Sound(*Enemy, FAUD_BOOM); //Create a Sound for the object
-	Face *FaceEnemy = new Face(*Enemy);//Define a Face for controlling received damage
-	Sfx->Pan = true;
-    
-	//Insert components on the new GameObject
-	Enemy->AddComponent(EnemySprite);
-	Enemy->AddComponent(Sfx);
-	Enemy->AddComponent(FaceEnemy);
+	//create object for holding the fadeout and a generic gameobject
+	GameObject* FadeOutGO = new GameObject();
+	Generic* FadeOut = new Generic(*FadeOutGO, "FadeOut");
 
-	AddGameObj(Enemy); //Register GameObject on the GameObjVec for executing with other objects in the scene
+	//Set start function
+	FadeOut->SetStart(
+	[](Generic* FadeOut)
+	{
+		FadeOut->Float["Time"] = 0;
+		FadeOut->Int["Counter"] = 0;
+	});
+
+	//Set update function
+	FadeOut->SetUpdate(
+	[](float Dt, Generic* FadeOut)
+	{
+		FadeOut->Float["Time"]+=Dt;
+		FadeOut->Int["Counter"]+=12;
+		(FadeOut->Int["Counter"] >= 255 ? FadeOut->Int["Counter"] = 255 : FadeOut->Int["Counter"]);
+
+		if(FadeOut->Float["Time"] >= 5)
+		{
+			FadeOut->RequestDelete();
+		}
+	});
+
+	//Set render function
+	FadeOut->SetRender(
+	[](Generic* FadeOut)
+	{
+		SDL_Surface* SurfScreen = SDL_CreateRGBSurface(0,FOG_SCRWIDTH, FOG_SCRHEIGHT, 32, 0,0,0,0);
+		SDL_SetSurfaceAlphaMod(SurfScreen,FadeOut->Int["Counter"]);
+		SDL_FillRect(SurfScreen, nullptr, 0x00000000);
+		SDL_Texture* ToShow = SDL_CreateTextureFromSurface(Game::GetInstance().GetRenderer(), SurfScreen);
+		SDL_SetTextureBlendMode(ToShow, SDL_BLENDMODE_BLEND);
+		SDL_RenderCopy(Game::GetInstance().GetRenderer(), ToShow, nullptr, nullptr);
+		SDL_DestroyTexture(ToShow);
+		SDL_FreeSurface(SurfScreen);
+	});
+
+	FadeOutGO->AddComponent(FadeOut);
+	AddLateRenderObj(FadeOutGO);
 }
 
 void State::Render()
 {
-	TileMap* OuterLayer = nullptr;//For keeping outer layer when there's parallax with layers over the reference
 	for(int i = 0; i< (int)(GameObjVec.size()); i++)
 	{
-		if(OuterLayer == nullptr)
-		{
-			OuterLayer = (TileMap*)(GameObjVec[i]->GetComponent("TileMap"));
-		}
 		GameObjVec[i]->Render(); //Calls render procedure for each existing GameObject
 	}
-
-	if(OuterLayer != nullptr)
+	
+	for(int i = 0; i< (int)(LateRenderVec.size()); i++)
 	{
-		OuterLayer->Render();//Prints outer layer for real parallax
+		LateRenderVec[i]->Render(); //Calls render procedure for the late stuff
 	}
 }
