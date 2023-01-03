@@ -1,5 +1,5 @@
 #include "../lib/IncludeAll.hpp"
-#define DEBUG
+//#define DEBUG
 
 Collider::Collider(GameObject& GameObj, Vec2 Scale, Vec2 Offset)
 : Component(GameObj)
