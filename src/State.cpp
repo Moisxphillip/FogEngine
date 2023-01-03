@@ -1,6 +1,5 @@
 #include "../lib/IncludeAll.hpp"
 
-
 State::State()
 {
     _QuitRequested = false; //Allows loop until quit is requested
@@ -87,16 +86,24 @@ void State::LoadAssets()
 	AddGameObj(BgElement);//Stores GameObject on scene GameObj vector
 
 	//Init TileMap
-	GameObject *StateMap = new GameObject();
-	TileSet *StateTileSet = new TileSet(FOG_TILEWIDTH, FOG_TILEHEIGHT, FIMG_TILESET);
-	TileMap *StateTileMap = new TileMap(*StateMap, FMAP_TILEMAP, StateTileSet);
+	GameObject* StateMap = new GameObject();
+	TileSet* StateTileSet = new TileSet(FOG_TILEWIDTH, FOG_TILEHEIGHT, FIMG_TILESET);
+	TileMap* StateTileMap = new TileMap(*StateMap, FMAP_TILEMAP, StateTileSet);
 	StateMap->AddComponent(StateTileMap);
 	AddGameObj(StateMap);
 	AddLateRenderObj(StateMap);
 
+	//Penguin
+	GameObject* PenguinObj = new GameObject();
+	PenguinBody* Penguin = new PenguinBody(*PenguinObj);
+	PenguinObj->Box.SetCenter(Vec2(100,100));
+	PenguinObj->AddComponent(Penguin);
+	AddGameObj(PenguinObj);
+	Cam.Follow(PenguinObj);
+	
 	//Alien
-	GameObject *AlienObj = new GameObject();
-	Alien *Et = new Alien(*AlienObj, FOG_NUMMINIONS);
+	GameObject* AlienObj = new GameObject();
+	Alien* Et = new Alien(*AlienObj, FOG_NUMMINIONS);
 	AlienObj->Box.SetCenter(Vec2(512,300));
 	AlienObj->AddComponent(Et);
 	AddGameObj(AlienObj);
@@ -122,28 +129,27 @@ void State::Update(float Dt)
 		_QuitRequested = true;
 	}
 
-	//Cam following object
-	if(InputManager::GetInstance().KeyPress(SDLK_t))
-	{
-		if(!Cam.IsFollowing())
-		{
-			Cam.Follow(GameObjVec[2].get()); 
-		}
-		else
-		{
-			Cam.Unfollow();
-		}
-	}
-
 	Cam.Update(Dt);
-
-	if(InputManager::GetInstance().KeyPress(K_P))
+		
+	for(int i = 0; i< (int)GameObjVec.size()-1; i++)
 	{
-		_FadeOut();
+		Component* ColA = GameObjVec[i]->GetComponent("Collider");
+		if(ColA != nullptr)
+		{
+			for(int j = i+1; j < (int)GameObjVec.size(); j++)
+			{
+				Component* ColB = GameObjVec[j]->GetComponent("Collider");
+				if(ColB != nullptr)
+				{
+					if(Collision::IsColliding(GameObjVec[i]->Box, GameObjVec[j]->Box, GameObjVec[i]->Angle, GameObjVec[j]->Angle))
+					{
+						GameObjVec[i]->Collided(*GameObjVec[j]);
+						GameObjVec[j]->Collided(*GameObjVec[i]);
+					}
+				}
+			}
+		}
 	}
-
-	//End of input
-
 	//Calls updates for contained objects and remove dead objects
 	GameObjUpdate(Dt);
 }

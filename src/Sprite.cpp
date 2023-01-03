@@ -10,6 +10,9 @@ Sprite::Sprite(GameObject& GameObj)
     _TimeElapsed = 0;
     _FrameTime = 0;
     _Orientation = Flip::N;
+    Loop = true;
+    LifeTime = 0;
+    ToSelfDestruct.Restart();
 }
 
 Sprite::Sprite(GameObject& GameObj, std::string File)
@@ -26,6 +29,17 @@ Sprite::Sprite(GameObject& GameObj, std::string File, int FrameCount = 1, float 
     _FrameTime = FrameTime;
     _SpriteWidth /= FrameCount;
     SetClip(0,0, _SpriteWidth, _SpriteHeight);    
+}
+
+Sprite::Sprite(GameObject& GameObj, std::string File, int FrameCount = 1, float FrameTime = 1, float LifeTime = 0)
+: Sprite(GameObj)
+{
+    Open(File);
+    _FrameCount = FrameCount;
+    _FrameTime = FrameTime;
+    _SpriteWidth /= FrameCount;
+    SetClip(0,0, _SpriteWidth, _SpriteHeight);
+    this->LifeTime = LifeTime;
 }
 
 Sprite::~Sprite()
@@ -144,11 +158,25 @@ void Sprite::Start()
 
 void Sprite::Update(float Dt)
 {
+    if(LifeTime > 0)
+    {
+        ToSelfDestruct.Update(Dt);
+        if(ToSelfDestruct.Get() >= LifeTime)
+        {
+            GameObjAssoc.RequestDelete();
+        }
+    }
+
     _TimeElapsed += Dt;
     if(_TimeElapsed >= _FrameTime && _FrameCount > 1)
     {
-        ++_CurrFrame%=_FrameCount;
-        SetFrame(_CurrFrame);
+        
+        if(Loop == true || _CurrFrame < _FrameCount-1)
+        {
+            ++_CurrFrame%=_FrameCount;
+            SetFrame(_CurrFrame);
+        }
+            
         _TimeElapsed = 0;
     }
 }

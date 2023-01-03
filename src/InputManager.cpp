@@ -147,3 +147,8 @@ int InputManager::GetMouseY()
 {
     return _MouseY + Game::GetInstance().GetState().Cam.Position.y;
 }
+
+Vec2 InputManager::GetMouseVec2()
+{
+    return Vec2(GetMouseX(), GetMouseY());
+}

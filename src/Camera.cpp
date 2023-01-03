@@ -15,6 +15,11 @@ void Camera::Follow(GameObject* Focus)
     Position = _Focus->Box.Center() - Vec2(FOG_SCRWIDTH>>1, FOG_SCRHEIGHT>>1);
 }
 
+Vec2 Camera::Center()
+{
+    return Position + Vec2(FOG_SCRWIDTH>>1, FOG_SCRHEIGHT>>1);
+}
+
 void Camera::Unfollow()
 {
     _Focus = nullptr;

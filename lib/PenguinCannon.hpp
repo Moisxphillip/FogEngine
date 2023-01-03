@@ -7,8 +7,7 @@ class PenguinCannon : public Component
 {
     private:
         std::weak_ptr<GameObject> _Body;
-        float _Angle;
-
+        Timer _Cooldown;
     public:
         PenguinCannon(GameObject&, std::weak_ptr<GameObject>);
         void Shoot();

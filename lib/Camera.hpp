@@ -13,7 +13,7 @@ class Camera
         Vec2 Speed;
         
         Camera();
-        
+        Vec2 Center();
         void Follow(GameObject*);
         bool IsFollowing();
         void Unfollow();

@@ -13,6 +13,7 @@ class Sound : public Component
     
     public:    
         bool Pan;
+        bool SelfDestruct;
         Sound(GameObject&);
         Sound(GameObject&, std::string);
         ~Sound();

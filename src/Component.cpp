@@ -19,6 +19,10 @@ void Component::Start()
 {
 }
 
+void Component::Collided(GameObject& Other)
+{
+}
+
 void Component::Update(float Dt)
 {
 }

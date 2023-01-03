@@ -12,13 +12,14 @@
 #define FOG_KEYARR 416
 #define FOG_BUTTONARR 6
 
-//
 #define ROTFRAC (M_PI/4)
-
-#define FOG_BULLETSPD 200.f
-#define FOG_BULLETDIST 500.f
-#define FOG_BULLETDMG 10
+#define FOG_BULLETSPD 300.f
+#define FOG_BULLETDIST 900.f
+#define FOG_BULLETDMG 15
 #define FOG_NUMMINIONS 5
+#define FOG_PENGACCEL 100
+#define FOG_PENGSPDMAX 200
+#define FOG_DEATHFRAMETIME 0.15
 
 
 //TODO implement a class that controls the screen info, reading configs

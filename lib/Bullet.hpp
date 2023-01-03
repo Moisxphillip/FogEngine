@@ -12,12 +12,15 @@ class Bullet : public Component
         int _Damage;
             
     public:
-        Bullet(GameObject&, float, float, int, float, std::string);
-        void Update(float);
-        void Render();
-        bool Is(std::string);
-        void Start();
+        bool TargetsPlayer;
+        Bullet(GameObject&, float, float, int, float, std::string, int, bool, bool);
         int GetDamage();
+
+        void Collided(GameObject&);
+        bool Is(std::string);
+        void Render();
+        void Start();
+        void Update(float);
 };
 
 #endif//FOG_BULLET

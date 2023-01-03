@@ -37,6 +37,14 @@ void GameObject::Update(float Dt)
     }
 }
 
+void GameObject::Collided(GameObject& Other)
+{
+    for(int i = 0; i < (int)(_GameObjComponents.size()); i++)
+    {
+        _GameObjComponents[i]->Collided(Other);
+    }
+}
+
 void GameObject::Render()
 {
     for (int i = 0; i < (int)(_GameObjComponents.size()); i++)

@@ -21,6 +21,13 @@
 #define FIMG_ALIEN "./res/img/alien.png"
 #define FIMG_MINION "./res/img/minion.png"
 #define FIMG_BULLET "./res/img/minionbullet2.png"
+#define FIMG_ALIENDEATH "./res/img/aliendeath.png"
+#define FIMG_MINIONDEATH "./res/img/miniondeath.png"
+#define FIMG_PENGDEATH "./res/img/penguindeath.png"
+
+#define FIMG_PENGBODY "./res/img/penguin.png"
+#define FIMG_PENGGUN "./res/img/cubngun.png"
+#define FIMG_PENGBULLET "./res/img/penguinbullet.png"
 
 //TileSet
 #define FIMG_TILESET "./res/img/tileset.png"

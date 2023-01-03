@@ -31,6 +31,7 @@ class Vec2
         friend Vec2 operator+(const Vec2&, const Vec2&);
         friend Vec2 operator-(const Vec2&, const Vec2&);
         friend Vec2 operator*(const Vec2&, const float&);
+        friend Vec2 operator*(const Vec2&, const Vec2&);
         friend bool operator==(const Vec2&, const Vec2&);
         friend bool operator!=(const Vec2&, const Vec2&);
         friend std::ostream& operator<<(std::ostream&, const Vec2&);
@@ -41,6 +42,7 @@ class Vec2
         Vec2& operator+=(const Vec2&);
         Vec2& operator-=(const Vec2&);
         Vec2& operator*=(const float&);
+        Vec2& operator*=(const Vec2&);
 
 };  
 

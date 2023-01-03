@@ -27,6 +27,7 @@
 
 #include "../lib/xrand.hpp"
 
+#include "../lib/Timer.hpp"
 #include "../lib/Vec2.hpp"
 #include "../lib/Rect.hpp"
 #include "../lib/Settings.hpp"
@@ -51,7 +52,7 @@
 #include "../lib/Minion.hpp"
 #include "../lib/PenguinCannon.hpp"
 #include "../lib/PenguinBody.hpp"
-#include "../lib/Timer.hpp"
 #include "../lib/Collider.hpp"
+#include "../lib/Collision.hpp"
 
 #endif//FOG_INCLUDEALL

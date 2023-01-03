@@ -18,9 +18,14 @@ class Sprite : public Component
         Flip _Orientation;
 
     public:
+        bool Loop;
+        Timer ToSelfDestruct;
+        float LifeTime;
+
         Sprite(GameObject&);
         Sprite(GameObject&, std::string);
         Sprite(GameObject&, std::string, int, float);
+        Sprite(GameObject&, std::string, int, float, float);
         ~Sprite();
         
         void Open(std::string);

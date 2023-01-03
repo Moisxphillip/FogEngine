@@ -23,6 +23,7 @@ class Rect
         //+, -, <<
         friend Rect operator+(const Rect&, const Vec2&);
         friend Rect operator-(const Rect&, const Vec2&);
+        friend Rect operator*(const Rect&, const Vec2&);
         friend std::ostream& operator<<(std::ostream&, const Rect&);
         //+=, -=,
         Rect& operator+=(const Vec2&);

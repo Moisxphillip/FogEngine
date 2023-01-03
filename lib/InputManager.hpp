@@ -57,6 +57,7 @@ class InputManager
         bool IsMouseDown(int);
         int GetMouseX();
         int GetMouseY();
+        Vec2 GetMouseVec2();
 
 };
 

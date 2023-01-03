@@ -6,31 +6,26 @@
 class Alien : public Component
 {
     private:
-        class Action
+        enum AlienState
         {
-            public:
-                Vec2 Position;
-                enum ActionType
-                {
-                    MOVE,
-                    SHOOT
-                };        
-                Action();
-                Action(ActionType, float, float);
-                Action(ActionType, Vec2);
-                ActionType Type;
+            MOVING,
+            REST            
         };
+        AlienState _CurrState;
+
+        Timer _Rest;
+        Vec2 Destination;
         Vec2 _Speed;
         int _HP;
         int _NumMinions;
-        Action _AlienAction;
-        std::queue<Action> _AlienTasks;
         std::vector<std::weak_ptr<GameObject>> _MinionVec;
 
     public:
+        static int AlienCount;
         Alien(GameObject&, int);
         ~Alien();
         
+        void Collided(GameObject&);
         bool Is(std::string);
         void Render();
         void Start();

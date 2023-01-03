@@ -1,4 +1,5 @@
 #include "../lib/IncludeAll.hpp"
+#define DEBUG
 
 Collider::Collider(GameObject& GameObj, Vec2 Scale, Vec2 Offset)
 : Component(GameObj)
@@ -32,20 +33,20 @@ void Collider::Render()
 	Vec2 Center = Box.Center();
 	SDL_Point SDLPoints[5];
 
-	Vec2 Point = (Vec2(Box.x, Box.y) - Center).Rotate(Vec2::RadToDeg(GameObjAssoc.Angle))
+	Vec2 Point = (Vec2(Box.x, Box.y) - Center).Rotate(GameObjAssoc.Angle)
 					+ Center - Game::GetInstance().GetState().Cam.Position;
 	SDLPoints[0] = {(int)Point.x, (int)Point.y};
 	SDLPoints[4] = {(int)Point.x, (int)Point.y};
 	
-	Point = (Vec2(Box.x + Box.w, Box.y) - Center).Rotate(Vec2::RadToDeg(GameObjAssoc.Angle))
+	Point = (Vec2(Box.x + Box.w, Box.y) - Center).Rotate(GameObjAssoc.Angle)
 					+ Center - Game::GetInstance().GetState().Cam.Position;
 	SDLPoints[1] = {(int)Point.x, (int)Point.y};
 	
-	Point = (Vec2(Box.x + Box.w, Box.y + Box.h) - Center).Rotate(Vec2::RadToDeg(GameObjAssoc.Angle))
+	Point = (Vec2(Box.x + Box.w, Box.y + Box.h) - Center).Rotate(GameObjAssoc.Angle)
 					+ Center - Game::GetInstance().GetState().Cam.Position;
 	SDLPoints[2] = {(int)Point.x, (int)Point.y};
 	
-	Point = (Vec2(Box.x, Box.y + Box.h) - Center).Rotate(Vec2::RadToDeg(GameObjAssoc.Angle))
+	Point = (Vec2(Box.x, Box.y + Box.h) - Center).Rotate(GameObjAssoc.Angle)
 					+ Center - Game::GetInstance().GetState().Cam.Position;
 	SDLPoints[3] = {(int)Point.x, (int)Point.y};
 
@@ -61,5 +62,8 @@ void Collider::Start()
 
 void Collider::Update(float Dt)
 {
-    
+    Box = GameObjAssoc.Box*_Scale;
+	Vec2 Rot = _Offset;
+	Rot.Rotate(GameObjAssoc.Angle);
+	Box.SetCenter(GameObjAssoc.Box.Center()+Rot);
 }

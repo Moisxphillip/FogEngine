@@ -20,6 +20,7 @@ class GameObject
         ~GameObject();
         void Start();
         void Update(float);
+        void Collided(GameObject&);
         void Render();
         bool IsDead();
         void RequestDelete();

@@ -59,8 +59,8 @@ float Vec2::DistAngle(const Vec2& Vector)
 Vec2 Vec2::Rotate(const float& Rad)
 {
     float Sin = sin(Rad), Cos = cos(Rad);
-    float x = this->x*Cos + this->y*Sin;
-    float y = this->y*Cos - this->x*Sin;
+    float x = this->x*Cos - this->y*Sin;
+    float y = this->y*Cos + this->x*Sin;
     this->x = x;
     this->y = y;
     
@@ -115,6 +115,11 @@ Vec2 operator*(const Vec2& Vector1, const float& Scalar)
     return Vec2(Vector1.x * Scalar, Vector1.y * Scalar);
 }
 
+Vec2 operator*(const Vec2& Vector1, const Vec2& Vector2)
+{
+    return Vec2(Vector1.x * Vector2.x, Vector1.y * Vector2.y);
+}
+
 bool operator==(const Vec2& Vector1, const Vec2& Vector2)
 {
     return (((abs(Vector1.x-Vector2.x) < 1e-9) && (abs(Vector1.y-Vector2.y) < 1e-9)) ? true : false);
@@ -165,5 +170,11 @@ Vec2& Vec2::operator*=(const float& Scalar)
 {
     this->x = this->x * Scalar;
     this->y = this->y * Scalar;
+    return *this;
+}
+
+Vec2& Vec2::operator*=(const Vec2& Vector)
+{
+    *this = *this * Vector;
     return *this;
 }

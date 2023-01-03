@@ -9,7 +9,6 @@ class PenguinBody : public Component
         std::weak_ptr<GameObject> _Cannon;
         Vec2 _Speed;
         float _LinearSpeed;
-        float _Angle;
         int _HP;
 
     public:
@@ -17,7 +16,9 @@ class PenguinBody : public Component
 
         PenguinBody(GameObject&);
         ~PenguinBody();
+        Vec2 CurrPosition();
 
+        void Collided(GameObject&);
         bool Is(std::string);
         void Render();
         void Start();

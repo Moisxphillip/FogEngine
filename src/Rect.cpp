@@ -56,6 +56,11 @@ Rect operator-(const Rect& Rectangle, const Vec2& Vector)
     return Rect(Rectangle.x - Vector.x, Rectangle.y - Vector.y, Rectangle.w, Rectangle.h);
 }
 
+Rect operator*(const Rect& Rectangle, const Vec2& Vector)
+{
+    return Rect(Rectangle.x * Vector.x, Rectangle.y * Vector.y, Rectangle.w, Rectangle.h);
+}
+
 std::ostream& operator<<(std::ostream& Out, const Rect& Rectangle)
 {
     Out << '(' << Rectangle.x << ',' << Rectangle.y << "),(" 

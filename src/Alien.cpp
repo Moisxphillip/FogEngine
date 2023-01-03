@@ -1,5 +1,6 @@
 #include "../lib/IncludeAll.hpp"
 
+int Alien::AlienCount = 0;
 
 Alien::Alien(GameObject& GameObj, int NumMinions)
 : Component(GameObj)
@@ -10,28 +11,31 @@ Alien::Alien(GameObject& GameObj, int NumMinions)
     Sprite *SpriteAlien = new Sprite(GameObj, FIMG_ALIEN);
     GameObjAssoc.Box.h = SpriteAlien->GetHeight();
     GameObjAssoc.Box.w = SpriteAlien->GetWidth();
+    Collider* CollideAlien = new Collider(GameObj);
+	CollideAlien->Box = GameObjAssoc.Box;
     GameObjAssoc.AddComponent(SpriteAlien);
+    GameObjAssoc.AddComponent(CollideAlien);
+    _CurrState = AlienState::REST;
+    _Rest.Restart();
+    AlienCount++;
 }
 
 Alien::~Alien()
 {
-
+    AlienCount--;
 }
 
-Alien::Action::Action()
+void Alien::Collided(GameObject& Other)
 {
-}
-
-Alien::Action::Action(ActionType Type, float x, float y)
-{
-    this->Type = Type;
-    Position = Vec2(x,y);
-}
-
-Alien::Action::Action(ActionType Type, Vec2 Coord)
-{
-    this->Type = Type;
-    Position = Coord;
+    Bullet* Shot = (Bullet*) Other.GetComponent("Bullet");
+    if(Shot != nullptr)
+    {
+        if (!Shot->TargetsPlayer)
+        {
+            _HP -= Shot->GetDamage();
+            Other.RequestDelete();
+        }
+    }
 }
 
 void Alien::Start()
@@ -44,56 +48,32 @@ void Alien::Start()
         MinionObj->AddComponent(NewMinion);
         _MinionVec.push_back(Game::GetInstance().GetState().AddGameObj(MinionObj));
     }
-    //Do nothing until alien works properly
 }
 
 void Alien::Update(float Dt)
 {
     //Alien Rotation
-    GameObjAssoc.Angle += (ROTFRAC/2)*Dt;
+    GameObjAssoc.Angle -= (ROTFRAC/2)*Dt;
 
-
-    if(InputManager::GetInstance().MousePress(M_LEFT))
+    if(_CurrState == AlienState::MOVING && PenguinBody::Player!=nullptr)
     {
-        Action NewAction(Action::SHOOT, InputManager::GetInstance().GetMouseX(),
-            InputManager::GetInstance().GetMouseY());
-        _AlienTasks.emplace(NewAction);
-    }
+        Vec2 Distance = GameObjAssoc.Box.Center() - Destination;
     
-    if(InputManager::GetInstance().MousePress(M_RIGHT))
-    {
-        Action NewAction(Action::MOVE, InputManager::GetInstance().GetMouseX(),
-            InputManager::GetInstance().GetMouseY());
-        _AlienTasks.emplace(NewAction);
-    }
-
-    if(!_AlienTasks.empty())
-    {
-
-        Vec2 Distance = GameObjAssoc.Box.Center() - _AlienTasks.front().Position;
-        if(_AlienTasks.front().Type == Action::MOVE)
+        Vec2 Direction = Distance.Normalized();
+        Direction *= _Speed * Dt;
+        GameObjAssoc.Box -= Direction;
+        if(Direction.Magnitude() >= Distance.Magnitude())
         {
-            Vec2 Direction = Distance.Normalized();
-            Direction.x *= _Speed.x * Dt;
-            Direction.y *= _Speed.y * Dt;
-            GameObjAssoc.Box -= Direction;
-            if(Direction.Magnitude() >= Distance.Magnitude())
-            {
-                GameObjAssoc.Box += Distance;
-                _AlienTasks.pop();
-            }
-            //
-            
-        }
-        else if (_AlienTasks.front().Type == Action::SHOOT)
-        {
+            GameObjAssoc.Box += Distance;
+            _CurrState = AlienState::REST;
+            _Rest.Restart();
+
             float Closest = 1e7; //A big number for quick substitution
             int Index = 0;
-
             for(int i = 0; i < _NumMinions; i++)
             {
-                //Gets the center of a minion, then the distance between it and the clicked point
-                float Dist = _MinionVec[i].lock()->Box.Center().Distance(_AlienTasks.front().Position);
+                //Gets the center of a minion, then the distance between it and the penguin
+                float Dist = _MinionVec[i].lock()->Box.Center().Distance(PenguinBody::Player->CurrPosition());
                 if(Dist < Closest)
                 {
                     Closest = Dist;
@@ -101,17 +81,56 @@ void Alien::Update(float Dt)
                 }
             }
             Minion* ChosenToShoot = (Minion*) _MinionVec[Index].lock()->GetComponent("Minion");
-            ChosenToShoot->Shoot(_AlienTasks.front().Position);
-            _AlienTasks.pop();
-        }
+            ChosenToShoot->Shoot(PenguinBody::Player->CurrPosition());
+        }        
+    }
+    else if (_CurrState == AlienState::REST)
+    {
+        _Rest.Update(Dt);
+        if(_Rest.Get()>= 2)
+        {
+            if(PenguinBody::Player!=nullptr)
+            {
+                Destination = PenguinBody::Player->CurrPosition();
+            }
+            _CurrState = AlienState::MOVING;
+        }        
     }
 
-    if(_HP == 0)
+    if(_HP <= 0)
     {
         for(int i = 0; i < _NumMinions; i++)
         {
+            GameObject* Death = new GameObject();
+            Sprite* AlienDeath = new Sprite(*Death, FIMG_MINIONDEATH, 4, FOG_DEATHFRAMETIME, 1);
+            AlienDeath->Loop = false;
+            Death->Box.h = AlienDeath->GetHeight();
+            Death->Box.w = AlienDeath->GetWidth();
+            Death->Box.SetCenter(_MinionVec[i].lock()->Box.Center());
+            Death->AddComponent(AlienDeath);
+            Game::GetInstance().GetState().AddGameObj(Death);
             _MinionVec[i].lock()->RequestDelete(); //Request delete for minions
         }
+
+        GameObject* Death = new GameObject();
+        Sprite* AlienDeath = new Sprite(*Death, FIMG_ALIENDEATH, 4, FOG_DEATHFRAMETIME, 1);
+        
+        AlienDeath->Loop = false;
+        Death->Box.h = AlienDeath->GetHeight();
+        Death->Box.w = AlienDeath->GetWidth();
+        Death->Box.SetCenter(GameObjAssoc.Box.Center());
+        Death->AddComponent(AlienDeath);
+        Game::GetInstance().GetState().AddGameObj(Death);
+        //Audio track is longer than animation, so plays as an external game object
+        GameObject* DeathSound = new GameObject();
+        DeathSound->Box = Death->Box;
+        Sound* Boom = new Sound(*DeathSound, FAUD_BOOM);
+        Boom->Pan = true;
+        Boom->SelfDestruct = true; 
+        Boom->Play(0);
+        DeathSound->AddComponent(Boom);
+        Game::GetInstance().GetState().AddGameObj(DeathSound);
+
         GameObjAssoc.RequestDelete(); //Request delete for alien
     }
 }
