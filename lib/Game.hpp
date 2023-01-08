@@ -14,6 +14,7 @@ class Game
         
         //internal procedures
         void _GameInitSDL();
+        bool _ChangeState();
         
         //Mandatory
         Game(std::string, int, int);
@@ -21,6 +22,7 @@ class Game
         SDL_Window* _GameWindow = nullptr;
         SDL_Renderer* _GameRenderer = nullptr;
         State* _GameState = nullptr;
+        std::stack<std::unique_ptr<State>> StateStack;
 
         int _FrameStart;
         float _Dt;
@@ -35,6 +37,7 @@ class Game
         //Mandatory
         ~Game();
         void Run();
+        void Push(State*);
         SDL_Renderer* GetRenderer();
         State& GetState();
         static Game& GetInstance();

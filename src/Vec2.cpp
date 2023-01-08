@@ -154,22 +154,19 @@ Vec2& Vec2::operator=(const std::list<int>& List)
 
 Vec2& Vec2::operator+=(const Vec2& Vector)
 {
-    this->x = this->x + Vector.x;
-    this->y = this->y + Vector.y;
+    *this = *this + Vector;
     return *this;
 }
 
 Vec2& Vec2::operator-=(const Vec2& Vector)
 {
-    this->x = this->x - Vector.x;
-    this->y = this->y - Vector.y;
+    *this = *this - Vector;
     return *this;
 }
 
 Vec2& Vec2::operator*=(const float& Scalar)
 {
-    this->x = this->x * Scalar;
-    this->y = this->y * Scalar;
+    *this = *this * Scalar;
     return *this;
 }
 

@@ -3,6 +3,7 @@
 std::unordered_map<std::string, SDL_Texture*> Resources::_ImageTable;
 std::unordered_map<std::string, Mix_Music*> Resources::_MusicTable;
 std::unordered_map<std::string, Mix_Chunk*> Resources::_SoundTable;
+std::unordered_map<std::string, TTF_Font*> Resources::_FontTable;
 
 //TODO optim.: turn .count() and [File] into a single operation
 SDL_Texture* Resources::GetImage(std::string& File)
@@ -50,6 +51,21 @@ Mix_Chunk* Resources::GetSound(std::string& File)
     return _SoundTable[File];
 }
 
+TTF_Font* Resources::GetFont(std::string& File)
+{
+    if(!_FontTable.count(File))
+    {
+        TTF_Font* NewFont = TTF_OpenFont(File.c_str(), 12);
+        if(NewFont == nullptr)
+        {
+            Error("Resources::GetFont: Font could not be loaded");
+        }
+        _FontTable[File] = NewFont;
+        return NewFont;
+    }
+    return _FontTable[File];
+}
+
 void Resources::ClearImages()
 {
     std::for_each(_ImageTable.begin(), _ImageTable.end(), //Iterates and use lambda for each case
@@ -71,9 +87,17 @@ void Resources::ClearSounds()
     _SoundTable.clear();
 }
 
+void Resources::ClearFonts()
+{
+    std::for_each(_FontTable.begin(), _FontTable.end(), //Iterates and use lambda for each case
+    [](auto& it){TTF_CloseFont(it.second);}); 
+    _FontTable.clear();
+}
+
 void Resources::FlushContext()
 {
     ClearImages();
     ClearMusics();
     ClearSounds();
+    ClearFonts();
 }

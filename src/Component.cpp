@@ -5,6 +5,7 @@
 Component::Component(GameObject& GameObj)
 : GameObjAssoc(GameObj)
 {
+    ComponentFlags = Uses::None;
 }
 
 Component::~Component()

@@ -3,6 +3,7 @@
 Sprite::Sprite(GameObject& GameObj)
 : Component(GameObj)
 {
+    ComponentFlags = Uses::Render | Uses::Update;
     _SpriteTexture = nullptr;
     _Scale = Vec2(1,1);
     _FrameCount = 0;

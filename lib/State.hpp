@@ -5,34 +5,42 @@
 
 class State
 {
-    private:
-        Music *_StateMusic;
+    protected:
         bool _QuitRequested;
-        bool _QuitFade;
-        void _Input();
-        void _FadeOut();
+        bool _PopRequested;
+        bool _Started;
+
         std::vector<std::shared_ptr<GameObject>> GameObjVec;
         std::vector<std::shared_ptr<GameObject>> LateRenderVec;
-        bool _Started;
-        bool _FaceEnabled;
         
-    public:
-        XrandU64 Rng;
+        void _StartArray();
+        void _UpdateArray(float);
+        void _RenderArray();
 
-        State();
-        ~State();
+        // Music * _StateMusic;
+       
+    public:
         Camera Cam;
 
-        void Start();
+        bool HasStarted();
+        bool PopRequested();
+        bool QuitRequested();
+
+        State();
+        virtual ~State();
+
+        virtual void Start();
+        virtual void Pause();
+        virtual void Resume();
+
         std::weak_ptr<GameObject> AddGameObj(GameObject*);
         std::weak_ptr<GameObject> AddLateRenderObj(GameObject*);
         std::weak_ptr<GameObject> GetGameObjPtr(GameObject*);
-        bool QuitRequested();
-        void LoadAssets();
-        void Input();
-        void Update(float);
-        void GameObjUpdate(float);
-        void Render();
+        std::weak_ptr<GameObject> GetLateRenderObjPtr(GameObject*);
+        
+        virtual void LoadAssets();
+        virtual void Update(float);
+        virtual void Render();
 
 };
 

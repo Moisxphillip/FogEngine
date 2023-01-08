@@ -16,6 +16,7 @@ class Rect
         Rect();
         //Functions
         void AddVec2(const Vec2&);
+        void Redimension(const Vec2&);
         Vec2 Center();
         void SetCenter(Vec2);
         float DistCenters(const Rect&);

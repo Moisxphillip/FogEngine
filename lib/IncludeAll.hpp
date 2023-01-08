@@ -7,6 +7,7 @@
 #include <cmath>
 #include <string>
 #include <list>
+#include <stack>
 #include <memory>
 #include <vector>
 #include <stdint.h>
@@ -30,6 +31,7 @@
 #include "../lib/Timer.hpp"
 #include "../lib/Vec2.hpp"
 #include "../lib/Rect.hpp"
+#include "../lib/Color.hpp"
 #include "../lib/Settings.hpp"
 #include "../lib/Tools.hpp"
 #include "../lib/GameObject.hpp"
@@ -38,6 +40,8 @@
 #include "../lib/Sound.hpp"
 #include "../lib/Camera.hpp"
 #include "../lib/State.hpp"
+#include "../lib/StageState.hpp"
+#include "../lib/TitleState.hpp"
 #include "../lib/Game.hpp"
 #include "../lib/Path.hpp"
 #include "../lib/Sprite.hpp"
@@ -54,5 +58,6 @@
 #include "../lib/PenguinBody.hpp"
 #include "../lib/Collider.hpp"
 #include "../lib/Collision.hpp"
+#include "../lib/Text.hpp"
 
 #endif//FOG_INCLUDEALL

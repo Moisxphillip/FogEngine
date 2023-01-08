@@ -25,6 +25,10 @@
 #define FIMG_MINIONDEATH "./res/img/miniondeath.png"
 #define FIMG_PENGDEATH "./res/img/penguindeath.png"
 
+#define FIMG_MAINSCR "./res/img/title.jpg"
+#define FIMG_WINSCR "./res/img/win.jpg"
+#define FIMG_LOSESCR "./res/img/lose.jpg"
+
 #define FIMG_PENGBODY "./res/img/penguin.png"
 #define FIMG_PENGGUN "./res/img/cubngun.png"
 #define FIMG_PENGBULLET "./res/img/penguinbullet.png"
@@ -36,5 +40,6 @@
 #define FMAP_TILEMAP "./res/map/tileMap.txt"
 
 //Ttf
+#define FTTF_CALL "./res/ttf/Call_me_maybe.ttf"
 
 #endif//FOG_PATH

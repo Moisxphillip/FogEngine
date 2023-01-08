@@ -8,6 +8,7 @@ class CameraFollower: public Component
     private:
 
     public:
+        Vec2 Offset;
         CameraFollower(GameObject&);
         void Update(float);
         void Render();

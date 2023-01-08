@@ -30,6 +30,7 @@ bool Collider::Is(std::string Type)
 void Collider::Render() 
 {
 #ifdef DEBUG
+	Update(0);
 	Vec2 Center = Box.Center();
 	SDL_Point SDLPoints[5];
 

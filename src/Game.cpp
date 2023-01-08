@@ -34,6 +34,11 @@ void Game::_GameInitSDL()
     {
         Error("Game::_GameInitSDL: Mix_AllocateChannels could not allocate the requested number of channels");
     }
+
+    if(TTF_Init() != 0)
+    {
+        Error("Game::_GameInitSDL: TTF_Init could not be initialized");
+    }
 }
 
 Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
@@ -74,7 +79,7 @@ Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
     _FrameStart = SDL_GetTicks();
     _Dt = 0.0f;
 
-    _GameState = new State; //Creates a base state for the game 
+    _GameState = nullptr;//new StageState; //Creates a base state for the game 
 }
 
 Game::~Game()
@@ -83,6 +88,7 @@ Game::~Game()
     Resources::FlushContext();
 
     //Quit SDL subsystems
+    TTF_Quit();
     Mix_CloseAudio();
     Mix_Quit();
     IMG_Quit();
@@ -91,22 +97,67 @@ Game::~Game()
     SDL_Quit();
     
     //Free last resources
-    delete _GameState;
+    while(!StateStack.empty())
+    {
+        StateStack.pop();
+    }
+
+    if(_GameState != nullptr)
+    {
+        delete _GameState;
+        _GameState = nullptr;
+    }
     delete _GameInstance;
 }
 
-void Game::Run()
+bool Game::_ChangeState()
 {
-    _GameState->Start();
-    while(!_GameState->QuitRequested())    //Wait for quit state
+    if(_GameState != nullptr)
     {
-        _CalculateDt();
-        InputManager::GetInstance().Update();
-        _GameState->Update(GetDt());//Calls update for all GameObject inside a scene
-        _GameState->Render(); //Calls render for all GameObject...
-        SDL_RenderPresent(_GameRenderer);//Presents the new rendered stuff on screen
-        SDL_Delay(Fps(30));//controls the framerate
-    }
+        if(!StateStack.empty())
+        {
+            StateStack.top()->Pause();
+        }
+        StateStack.push(std::unique_ptr<State>(_GameState));
+        _GameState = nullptr;
+        return true;
+    } 
+    return false;
+}
+
+void Game::Run()
+{   
+    _ChangeState();
+    while(!StateStack.empty() && !StateStack.top()->QuitRequested())    //Wait for quit state
+    {
+        if(!StateStack.top()->HasStarted())
+        {
+            StateStack.top()->Start();
+        }
+        else
+        {
+            StateStack.top()->Resume();
+        }
+
+        while(!StateStack.top()->PopRequested())
+        {
+            _CalculateDt();
+            InputManager::GetInstance().Update();
+            StateStack.top()->Update(GetDt());//Calls update for all GameObject inside a scene
+            StateStack.top()->Render(); //Calls render for all GameObject...
+            SDL_RenderPresent(_GameRenderer);//Presents the new rendered stuff on screen
+            SDL_Delay(Fps(30));//controls the framerate
+            if(_ChangeState())
+            {
+                break;
+            }
+        }
+        if(StateStack.top()->PopRequested())
+        {
+            StateStack.pop();
+        }
+    } 
+    
 }
 
 SDL_Renderer* Game::GetRenderer()
@@ -116,7 +167,12 @@ SDL_Renderer* Game::GetRenderer()
 
 State& Game::GetState()
 {
-    return *_GameState;
+    return *StateStack.top().get();
+}
+
+void Game::Push(State* NewState)
+{
+    _GameState = NewState;
 }
 
 Game& Game::GetInstance()

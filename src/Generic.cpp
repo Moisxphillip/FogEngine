@@ -4,6 +4,7 @@ Generic::Generic(GameObject& GameObj, std::string Type)
 : Component(GameObj), Angle(GameObjAssoc.Angle), Box(GameObjAssoc.Box)
 {
     _Type = Type;
+    ComponentFlags = Uses::All;
     this->Started = false;
     _Render = nullptr;
     _Start = nullptr;

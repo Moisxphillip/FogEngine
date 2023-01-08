@@ -21,6 +21,12 @@ void Rect::AddVec2(const Vec2& Vector)
     this->y += Vector.y;
 }
 
+void Rect::Redimension(const Vec2& Vector)
+{
+    this->w = Vector.x;
+    this->h = Vector.y;
+}
+
 Vec2 Rect::Center()
 {
     return Vec2(x+(w/2), y+(h/2));

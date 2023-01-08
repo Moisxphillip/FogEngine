@@ -26,17 +26,19 @@
 //from a file or creating a file with the default settings.
 
 
-enum USEDFN //Bitwise checks
+enum Uses //Bitwise-based flags
 {
-    NONE = 0,
-    RENDER = 1 << 0,
-    START =  1 << 1,
-    UPDATE = 1 << 2
+    None = 0,
+    All = 0xFFFF,
+    Collision = 1 << 0,
+    Render = 1 << 1,
+    Start =  1 << 2,
+    Update = 1 << 3
 };
 
-inline USEDFN operator|(USEDFN a, USEDFN b)
+inline Uses operator|(Uses a, Uses b)
 {
-    return static_cast<USEDFN>(static_cast<int>(a) | static_cast<int>(b));
+    return static_cast<Uses>(static_cast<int>(a) | static_cast<int>(b));
 }
 
 

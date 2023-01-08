@@ -9,6 +9,7 @@ class Component
         GameObject& GameObjAssoc;
 
     public:
+        Uses ComponentFlags;
         Component(GameObject&);
         virtual ~Component();
         virtual void Update(float);
