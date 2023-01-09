@@ -8,8 +8,8 @@
 *///--------------------------------------
 
 //Music
-//#define FMUS_STAGE1 "./res/audio/stageState.ogg"
-#define FMUS_STAGE1 "./res/audio/fungal_mantis.ogg"
+#define FMUS_STAGE1 "./res/audio/stageState.ogg"
+//#define FMUS_STAGE1 "./res/audio/fungal_mantis.ogg"
 
 #define FMUS_STAGELOSE "./res/audio/endStateLose.ogg"
 //#define FMUS_STAGELOSE "./res/audio/lacrimosa.ogg"
@@ -18,14 +18,14 @@
 //#define FMUS_STAGEWIN "./res/audio/greenpath.ogg"
 
 //Audio
-//#define FAUD_BOOM "./res/audio/boom.wav"
-#define FAUD_BOOM "./res/audio/snore.ogg"
+#define FAUD_BOOM "./res/audio/boom.wav"
+//#define FAUD_BOOM "./res/audio/snore.ogg"
 
 //Image
 #define FIMG_OCEAN "./res/img/ocean.jpg"
 #define FIMG_PENGFACE "./res/img/penguinface.png"
-#define FIMG_ALIEN "./res/img/alien.png"
-#define FIMG_MINION "./res/img/minion.png"
+#define FIMG_ALIEN "./res/img/alien2.png"
+#define FIMG_MINION "./res/img/minion2.png"
 #define FIMG_BULLET "./res/img/minionbullet2.png"
 #define FIMG_ALIENDEATH "./res/img/aliendeath.png"
 #define FIMG_MINIONDEATH "./res/img/miniondeath.png"
