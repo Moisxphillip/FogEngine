@@ -63,12 +63,21 @@ void StageState::LoadAssets()
 	Cam.Follow(PenguinObj);
 	
 	//Alien
-	GameObject* AlienObj = new GameObject();
-	Alien* Et = new Alien(*AlienObj, FOG_NUMMINIONS);
-	AlienObj->Box.SetCenter(Vec2(512,300));
-	AlienObj->AddComponent(Et);
-	AddGameObj(AlienObj);
+	XrandU64 X, Y, N;
+	X.seed(rand());
+	Y.seed(rand());
+	N.seed(rand());
+	X.range(0, 1408);
+	Y.range(0, 1280);
 
+	for(int i = 0; i<5; i++)
+	{
+		GameObject* AlienObj = new GameObject();
+		Alien* Et = new Alien(*AlienObj, 4+(N.gen()%4));
+		AlienObj->Box.SetCenter(Vec2(X.gen(),Y.gen()));
+		AlienObj->AddComponent(Et);
+		AddGameObj(AlienObj);
+	}
 	//Play music
 	_StateMusic = new Music(FMUS_STAGE1);//Load the music file for the current state
 	_StateMusic->Play(-1, 1000); //Start playing phase theme
@@ -79,21 +88,37 @@ void StageState::Update(float Dt)
 	//Sets QuitFade flag if Esc or close button were pressed
 	if((!_QuitFade && (InputManager::GetInstance().IsKeyDown(K_ESC) || InputManager::GetInstance().QuitRequested()))) 
 	{
-		_StateMusic->Stop(1000);
+		_StateMusic->Stop(0);
 		_QuitFade = true;
-		_FadeOut();
+		_QuitRequested = true;
 	}
 
 	if(_QuitFade && !Mix_PlayingMusic())//Ensures fadeout finishes before closing
 	{
+		if(Alien::AlienCount == 0 || PenguinBody::Player == nullptr)
+		{
+			EndState* Ended = new EndState();
+			Game::GetInstance().Push(Ended);
+		}
 		_PopRequested = true;
-		//_QuitRequested = true;
 	}
 
-	if(Alien::AlienCount == 0)
+	if(Alien::AlienCount == 0 && !_QuitFade)
 	{
 		_StateMusic->Stop(1000);
-		_PopRequested = true;
+		GameStats::PlayerVictory = true;
+		_QuitFade = true;
+	}
+	else if(PenguinBody::Player == nullptr && !_QuitFade)
+	{
+		_StateMusic->Stop(1000);
+		GameStats::PlayerVictory = false;
+		_QuitFade = true;
+	}
+
+	if(!_QuitFade && !Mix_PlayingMusic())
+	{
+		
 	}
 
 	Cam.Update(Dt);
@@ -122,51 +147,6 @@ void StageState::Update(float Dt)
 
 }
 
-void StageState::_FadeOut()
-{
-	//create object for holding the fadeout and a generic gameobject
-	GameObject* FadeOutGO = new GameObject();
-	Generic* FadeOut = new Generic(*FadeOutGO, "FadeOut");
-
-	//Set start function
-	FadeOut->SetStart(
-	[](Generic* FadeOut)
-	{
-		FadeOut->Float["Time"] = 0;
-		FadeOut->Int["Counter"] = 0;
-	});
-
-	//Set update function
-	FadeOut->SetUpdate(
-	[](float Dt, Generic* FadeOut)
-	{
-		FadeOut->Float["Time"]+=Dt;
-		FadeOut->Int["Counter"]+=12;
-		(FadeOut->Int["Counter"] >= 255 ? FadeOut->Int["Counter"] = 255 : FadeOut->Int["Counter"]);
-
-		if(FadeOut->Float["Time"] >= 5)
-		{
-			FadeOut->RequestDelete();
-		}
-	});
-
-	//Set render function
-	FadeOut->SetRender(
-	[](Generic* FadeOut)
-	{
-		SDL_Surface* SurfScreen = SDL_CreateRGBSurface(0,FOG_SCRWIDTH, FOG_SCRHEIGHT, 32, 0,0,0,0);
-		SDL_SetSurfaceAlphaMod(SurfScreen,FadeOut->Int["Counter"]);
-		SDL_FillRect(SurfScreen, nullptr, 0x00000000);
-		SDL_Texture* ToShow = SDL_CreateTextureFromSurface(Game::GetInstance().GetRenderer(), SurfScreen);
-		SDL_SetTextureBlendMode(ToShow, SDL_BLENDMODE_BLEND);
-		SDL_RenderCopy(Game::GetInstance().GetRenderer(), ToShow, nullptr, nullptr);
-		SDL_DestroyTexture(ToShow);
-		SDL_FreeSurface(SurfScreen);
-	});
-
-	FadeOutGO->AddComponent(FadeOut);
-	AddLateRenderObj(FadeOutGO);
-}
 
 void StageState::Render()
 {

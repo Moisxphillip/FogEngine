@@ -29,6 +29,11 @@ bool State::QuitRequested()
     return _QuitRequested;
 }
 
+void State::RequestQuit()
+{
+	_QuitRequested = true;
+}
+
 
 std::weak_ptr<GameObject> State::AddGameObj(GameObject* NewGameObject)
 {

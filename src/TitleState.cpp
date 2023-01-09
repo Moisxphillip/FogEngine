@@ -20,7 +20,6 @@ void TitleState::LoadAssets()
     Title->Box.Redimension(Vec2(TitleImage->GetWidth(),TitleImage->GetHeight()));
     Title->AddComponent(TitleImage);
     AddGameObj(Title);
-
     Cam.Follow(Title);
 
     GameObject* TitleDesc = new GameObject();
@@ -34,23 +33,23 @@ void TitleState::LoadAssets()
 void TitleState::Update(float Dt)
 {
     TextColorChange.Update(Dt);
-    if(TextColorChange.Get() < 4)
-    {
-        float ColorMod = TextColorChange.Get()*90;
-        TextColor.SetHSV(ColorMod, 100, 80);
-        for(int i = 0; i< (int) (GameObjVec.size()); i++)
-        {
-            Text *ScrTxt = (Text*)GameObjVec[i]->GetComponent("Text");
-            if(ScrTxt != nullptr)
-            {
-                ScrTxt->SetColor(TextColor.ColorSDL());
-            }
-        }
-    }
-    else
+    if(TextColorChange.Get() > 4)
     {
         TextColorChange.Restart();
     }
+
+    //Rainbow effect
+    float ColorMod = TextColorChange.Get()*90;
+    TextColor.SetHSV(ColorMod, 100, 80);
+    for(int i = 0; i< (int) (GameObjVec.size()); i++)
+    {
+        Text *ScrTxt = (Text*)GameObjVec[i]->GetComponent("Text");
+        if(ScrTxt != nullptr)
+        {
+            ScrTxt->SetColor(TextColor.ColorSDL());
+            break;
+        }
+    } 
 
     if(InputManager::GetInstance().KeyPress(K_SPACE))
     {

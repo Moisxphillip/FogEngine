@@ -7,7 +7,7 @@ Alien::Alien(GameObject& GameObj, int NumMinions)
 {
     _HP = 100;
     _NumMinions = NumMinions;
-    _Speed = Vec2(100,100);
+    _Speed = Vec2(FOG_ALIENSPD,FOG_ALIENSPD);
     Sprite *SpriteAlien = new Sprite(GameObj, FIMG_ALIEN);
     GameObjAssoc.Box.h = SpriteAlien->GetHeight();
     GameObjAssoc.Box.w = SpriteAlien->GetWidth();
@@ -18,6 +18,8 @@ Alien::Alien(GameObject& GameObj, int NumMinions)
     _CurrState = AlienState::REST;
     _Rest.Restart();
     AlienCount++;
+    _WaitTime.seed(rand());
+    _ExtraTime = _WaitTime.gen();
 }
 
 Alien::~Alien()
@@ -82,12 +84,13 @@ void Alien::Update(float Dt)
             }
             Minion* ChosenToShoot = (Minion*) _MinionVec[Index].lock()->GetComponent("Minion");
             ChosenToShoot->Shoot(PenguinBody::Player->CurrPosition());
+            _ExtraTime = _WaitTime.gen();
         }        
     }
     else if (_CurrState == AlienState::REST)
     {
         _Rest.Update(Dt);
-        if(_Rest.Get()>= 2)
+        if(_Rest.Get() >= 1+_ExtraTime)
         {
             if(PenguinBody::Player!=nullptr)
             {

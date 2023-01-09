@@ -19,6 +19,8 @@ class Alien : public Component
         int _HP;
         int _NumMinions;
         std::vector<std::weak_ptr<GameObject>> _MinionVec;
+        XrandF32 _WaitTime;
+        float _ExtraTime;
 
     public:
         static int AlienCount;

@@ -25,6 +25,7 @@ class State
         bool HasStarted();
         bool PopRequested();
         bool QuitRequested();
+        void RequestQuit();
 
         State();
         virtual ~State();

@@ -154,7 +154,12 @@ void Game::Run()
         }
         if(StateStack.top()->PopRequested())
         {
+            bool QuitRequested = StateStack.top()->QuitRequested();
             StateStack.pop();
+            if(QuitRequested && !StateStack.empty())
+            {
+                StateStack.top()->RequestQuit();
+            }
         }
     } 
     

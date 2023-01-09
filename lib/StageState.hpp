@@ -9,7 +9,6 @@ class StageState : public State
         Music *_StateMusic;
         bool _QuitFade;
         void _FadeOut();
-
         
     public:
         XrandU64 Rng;

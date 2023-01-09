@@ -92,27 +92,28 @@ void TileMap::RenderLayer(int Layer, int CamX, int CamY)
     /* render formula is not properly working with layers below base, must fix 
     -- boundaries. For now, keep the variables as they worked before intervention.
     */
-
-    //Start render from tile on cam position //TODO IMPROVE LAYER LOGIC
-    int StartX = 0,//-CamX/_CurrTileSet->GetTileWidth(), 
-    StartY = 0;//-CamY/_CurrTileSet->GetTileHeight();
-    //(StartX < 0 ? StartX = 0 : StartX);
-    //(StartY < 0 ? StartY = 0 : StartY);
-    
+    int StartX = 0,
+    StartY = 0;
+   
     //Render until most far tile inside view
-    int EndX = _MapWidth,//((-CamX+(FOG_SCRWIDTH*(Parallax+1))))/_CurrTileSet->GetTileWidth()+1,
-    EndY = _MapHeight;//((-CamY+FOG_SCRHEIGHT*(Parallax+1)))/_CurrTileSet->GetTileHeight()+1;
-    //(EndX >= _MapWidth ? EndX = _MapWidth : EndX);
-    //(EndY >= _MapHeight ? EndY = _MapHeight : EndY);
+    int EndX = _MapWidth,
+    EndY = _MapHeight;
 
+    Rect CamArea(0,0,FOG_SCRWIDTH, FOG_SCRHEIGHT); 
+    CamArea+= Game::GetInstance().GetState().Cam.Position;
 
     for(int y = StartY; y < EndY; y++)//iterates through rows
     {
         for(int x = StartX; x < EndX; x++)//iterates through columns
         {
-            _CurrTileSet->RenderTile(At(x, y, Layer), //finds tile identifier
-                float(CamX*Parallax + x*_CurrTileSet->GetTileWidth()), //Crop+positioning
-                float(CamY*Parallax + y*_CurrTileSet->GetTileHeight()));
+            float XPos = float(CamX*Parallax + x*_CurrTileSet->GetTileWidth());
+            float YPos = float(CamY*Parallax + y*_CurrTileSet->GetTileHeight());
+
+            if(CamArea.Contains(Vec2(XPos, YPos)) || CamArea.Contains(Vec2(XPos+_CurrTileSet->GetTileWidth(), YPos))
+                || CamArea.Contains(Vec2(XPos, YPos+_CurrTileSet->GetTileHeight())) || CamArea.Contains(Vec2(XPos+_CurrTileSet->GetTileWidth(), YPos+_CurrTileSet->GetTileHeight())))
+            {
+                _CurrTileSet->RenderTile(At(x, y, Layer), XPos, YPos);//finds tile identifier and render in position
+            }
         }        
     }
 }
