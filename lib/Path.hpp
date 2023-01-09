@@ -11,11 +11,11 @@
 //#define FMUS_STAGE1 "./res/audio/stageState.ogg"
 #define FMUS_STAGE1 "./res/audio/fungal_mantis.ogg"
 
-//#define FMUS_STAGELOSE "./res/audio/endStateLose.ogg"
-#define FMUS_STAGELOSE "./res/audio/lacrimosa.ogg"
+#define FMUS_STAGELOSE "./res/audio/endStateLose.ogg"
+//#define FMUS_STAGELOSE "./res/audio/lacrimosa.ogg"
 
-//#define FMUS_STAGEWIN "./res/audio/endStateWin.ogg"
-#define FMUS_STAGEWIN "./res/audio/greenpath.ogg"
+#define FMUS_STAGEWIN "./res/audio/endStateWin.ogg"
+//#define FMUS_STAGEWIN "./res/audio/greenpath.ogg"
 
 //Audio
 //#define FAUD_BOOM "./res/audio/boom.wav"
