@@ -25,8 +25,10 @@ class Color
         Color& operator+=(const Color&);
         friend Color operator-(const Color&, const Color&);
         Color& operator-=(const Color&);
+        friend std::ostream& operator<<(std::ostream&, const Color&);
 
         SDL_Color ColorSDL();
+        uint32_t ColorUint32();
 
 };
 

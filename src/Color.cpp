@@ -10,7 +10,24 @@ Color::Color()
 
 Color::Color(std::string Hex)
 {
-
+    if(Hex.length() == 7)
+    {
+        uint32_t R, G, B;
+        sscanf(Hex.substr(1,6).c_str(), "%02x%02x%02x", &R, &G, &B);
+        this->R = R;
+        this->G = G;
+        this->B = B;
+        this->A = 0; 
+    }
+    else if(Hex.length() == 9)
+    {
+        uint32_t R, G, B, A;
+        sscanf(Hex.substr(1,8).c_str(), "%02x%02x%02x%02x", &R, &G, &B, &A);
+        this->R = R;
+        this->G = G;
+        this->B = B;
+        this->A = A; 
+    }
 }
 
 Color::Color(uint8_t R, uint8_t G, uint8_t B)
@@ -59,6 +76,12 @@ Color& Color::operator+=(const Color& X)
     return *this;
 }
 
+std::ostream& operator<<(std::ostream& Out, const Color& Colour)
+{
+    Out << "#" << std::hex << Colour.R << Colour.G << Colour.B << Colour.A;
+    return Out;
+}
+
 SDL_Color Color::ColorSDL()
 {
     SDL_Color Convert{R,G,B,A};
@@ -104,4 +127,9 @@ void Color::SetHSV(float H, float S,float V)
     }
     
     *this = Color((r+m)*255, (g+m)*255, (b+m)*255);
+}
+
+uint32_t Color::ColorUint32()
+{
+	return (uint32_t)((this->R << 16) + (this->G << 8) + (this->B << 0));
 }

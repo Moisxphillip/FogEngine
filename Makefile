@@ -1,4 +1,4 @@
-COMPILER = g++ 
+COMPILER = tg++ 
 RMDIR = rm -rdf
 RM = rm -f
 
@@ -13,9 +13,10 @@ DFLAGS = -ggdb -O0 -DDEBUG
 
 RFLAGS = -O3 -mtune=native
 
+
 INC_PATH = lib
 SRC_PATH = src
-BIN_PATH = bin
+BIN_PATH = bin/obj
 DEP_PATH = dep
 
 CPP_FILES = $(wildcard $(SRC_PATH)/*.cpp)
@@ -31,15 +32,15 @@ ifeq ($(OS),Windows_NT)
 RMDIR = rd /s /q
 RM = del /q
 
-#SDL_PATHS = sdl
-SDL_PATHS = C:/SDL2-2.0.22/i686-w64-mingw32 #casa
+SDL_PATHS = sdl
+#SDL_PATHS = C:/SDL2-2.0.22/i686-w64-mingw32 #casa
 #DL_PATHS = C:/SDL2-2.0.5/i686-w64-mingw32 #linf
 
 SDL_INC_PATH += $(addsuffix /include,$(SDL_PATHS))
 LINK_PATH = $(addprefix -L,$(addsuffix /lib,$(SDL_PATHS)))
 
-#comment line below to enable prompt feedback
-FLAGS += -mwindows
+#remove comment to disable prompt feedback
+#FLAGS += -mwindows
 
 DFLAGS += -mconsole
 LIBS := -lmingw32 -lSDL2main $(LIBS)
@@ -84,14 +85,14 @@ debug: FLAGS += $(DFLAGS)
 debug: $(EXEC)
 
 folders:
-ifeq ($(OS), Windows_NT)
-#	@if NOT exist $(DEP_PATH) @mkdir $(DEP_PATH)
-#	@if NOT exist $(BIN_PATH) @mkdir $(BIN_PATH)
-#	@if NOT exist $(INC_PATH) @mkdir $(INC_PATH)
-#	@if NOT exist $(SRC_PATH) @mkdir $(SRC_PATH)
-else
-#	@mkdir -p $(DEP_PATH) $(BIN_PATH) $(INC_PATH) $(SRC_PATH)
-endif
+#ifeq ($(OS), Windows_NT)
+#	@if NOT exist $(DEP_PATH) (mkdir $(DEP_PATH))
+#	@if NOT exist $(BIN_PATH) (mkdir $(BIN_PATH))
+#	@if NOT exist $(INC_PATH) (mkdir $(INC_PATH))
+#	@if NOT exist $(SRC_PATH) (mkdir $(SRC_PATH))
+#else
+	@mkdir -p $(DEP_PATH) $(BIN_PATH) $(INC_PATH) $(SRC_PATH)
+#endif
 
 print-% : ; echo $* = $($*)
 

@@ -1,5 +1,7 @@
 #include "../lib/IncludeAll.hpp"
 
+ScreenFade* Screener = nullptr;
+
 StageState::StageState()
 {
     _QuitRequested = false; //Allows loop until quit is requested
@@ -100,6 +102,7 @@ void StageState::Update(float Dt)
 			EndState* Ended = new EndState();
 			Game::GetInstance().Push(Ended);
 		}
+		Screener = nullptr;
 		_PopRequested = true;
 	}
 
@@ -118,8 +121,35 @@ void StageState::Update(float Dt)
 
 	if(!_QuitFade && !Mix_PlayingMusic())
 	{
-		
+		_QuitFade = true;
 	}
+
+	if(InputManager::GetInstance().KeyPress(K_P))
+	{
+		if(Screener == nullptr)
+		{
+			GameObject* ScreenObj = new GameObject();
+			ScreenFade* Scr = new ScreenFade(*ScreenObj, Color("#000000"),0.0, 0.9, 2);
+			ScreenObj->AddComponent(Scr);
+			AddLateRenderObj(ScreenObj);
+			Screener = Scr;
+		}
+	}
+	if(InputManager::GetInstance().KeyPress(SDLK_MINUS))
+	{
+		if(Screener != nullptr)
+		{
+			Screener->RedirectFade(0.1);
+		}
+	}
+	else if(InputManager::GetInstance().KeyPress(SDLK_EQUALS))
+	{
+		if(Screener != nullptr)
+		{
+			Screener->RedirectFade(0.9);
+		}
+	}
+
 
 	Cam.Update(Dt);
 		

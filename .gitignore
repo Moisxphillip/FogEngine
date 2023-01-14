@@ -12,6 +12,7 @@ sdl2-config
 
 #Folders
 /sdl
+/garbage
 /.vscode
 
 #Substitution Audio Files
@@ -21,3 +22,4 @@ snore.ogg
 city_of_tears.ogg
 fungal_mantis.ogg
 crystal_action.ogg
+lacrimosa.ogg

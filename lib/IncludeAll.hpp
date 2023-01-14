@@ -61,5 +61,7 @@
 #include "../lib/Collider.hpp"
 #include "../lib/Collision.hpp"
 #include "../lib/Text.hpp"
+#include "../lib/ScreenFilter.hpp"
+#include "../lib/ScreenFade.hpp"
 
 #endif//FOG_INCLUDEALL
