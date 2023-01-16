@@ -80,14 +80,14 @@ void PenguinBody::Update(float Dt)
         _LinearSpeed = -FOG_PENGSPDMAX;
     }
 
-    if(GameObjAssoc.Box.Center().y < 0 || GameObjAssoc.Box.Center().y > 1280)
-    {
-        GameObjAssoc.Angle = -GameObjAssoc.Angle;
-    }
-    if(GameObjAssoc.Box.Center().x < 0 || GameObjAssoc.Box.Center().x > 1400)
-    {
-        GameObjAssoc.Angle = M_PI - GameObjAssoc.Angle;
-    }
+    // if(GameObjAssoc.Box.Center().y < 0 || GameObjAssoc.Box.Center().y > 1280)
+    // {
+    //     GameObjAssoc.Angle = -GameObjAssoc.Angle;
+    // }
+    // if(GameObjAssoc.Box.Center().x < 0 || GameObjAssoc.Box.Center().x > 1400)
+    // {
+    //     GameObjAssoc.Angle = M_PI - GameObjAssoc.Angle;
+    // }
     Vec2 Move(_LinearSpeed*Dt, 0);
     Move.Rotate(GameObjAssoc.Angle);
     GameObjAssoc.Box-=Move;

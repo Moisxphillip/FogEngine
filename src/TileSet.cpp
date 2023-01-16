@@ -29,12 +29,14 @@ TileSet::~TileSet()
     delete _Set;
 }
 
-void TileSet::RenderTile(uint32_t Index, float x, float y)
+void TileSet::RenderTile(int Index, float x, float y)
 {
+    Index++;
     if(Index == 0)
     {
         return;
     } 
+
     if (int(Index) >= _MaxTiles) //Just in case someone asks for tiles outside the boundaries
     {
         Error("TileSet::RenderTile: Tile requested exceded the max number of tiles on current Set");

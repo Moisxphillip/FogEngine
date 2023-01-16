@@ -40,10 +40,12 @@
 #define FIMG_PENGBULLET "./res/img/penguinbullet.png"
 
 //TileSet
-#define FIMG_TILESET "./res/img/tileset.png"
+//#define FIMG_TILESET "./res/img/tileset.png"
+#define FIMG_TILESET "./res/img/cset.png"
 
 //TileMap
-#define FMAP_TILEMAP "./res/map/tileMap.txt"
+//#define FMAP_TILEMAP "./res/map/tileMap.txt"
+#define FMAP_TILEMAP "./res/map/base.txt"
 
 //Ttf
 #define FTTF_CALL "./res/ttf/Call_me_maybe.ttf"

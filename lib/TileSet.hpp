@@ -18,7 +18,7 @@ class TileSet
     public:
         TileSet(int, int, std::string);
         ~TileSet();
-        void RenderTile(uint32_t, float, float);
+        void RenderTile(int, float, float);
         int GetTileWidth();
         int GetTileHeight();
     
