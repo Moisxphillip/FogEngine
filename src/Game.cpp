@@ -6,7 +6,7 @@ Game* Game::_GameInstance = nullptr;
 void Game::_GameInitSDL()
 {
     //init SDL
-    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0)
+    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVERYTHING) != 0)
     {
         Error("Game::_GameInitSDL: SDL could not be initialized");
     }
@@ -62,23 +62,37 @@ Game::Game(std::string Name = "FogEngine", int Width = 1024, int Height = 600)
 
     //Window creation
     _GameWindow = SDL_CreateWindow(_GameTitle.c_str(), SDL_WINDOWPOS_CENTERED, 
-    SDL_WINDOWPOS_CENTERED, _GameWidth, _GameHeight, SDL_WINDOW_SHOWN);
+    SDL_WINDOWPOS_CENTERED, _GameWidth, _GameHeight, SDL_WINDOW_OPENGL| SDL_WINDOW_RESIZABLE);
     if(_GameWindow == nullptr)
     {
         Error("Game::Game: Window could not be created");   
     }
     
-    //Renderer creation
-    //-1 allows SDL to choose the most appropriate render drive
+    //GL Context to run window
+    SDL_GLContext GLCont = SDL_GL_CreateContext(_GameWindow);
+    if(GLCont == nullptr) 
+    {
+        Error("Game::Game: GLContext could not be created");   
+    }
+    if(glewInit() != GLEW_OK)
+    {
+        Error("Game::Game: glewInit failed a component init");
+    }
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); //Double buffer to prevent stuttering
+    glClearColor(0,0.3,1, 1.0);//Sets the color of clear buffer
+
+    // Renderer creation
+    // -1 allows SDL to choose the most appropriate render drive
     _GameRenderer = SDL_CreateRenderer(_GameWindow, -1, SDL_RENDERER_ACCELERATED);
     if(_GameRenderer == nullptr) 
     {
         Error("Game::Game: Renderer could not be created");   
     }
+    SDL_RenderSetLogicalSize(_GameRenderer, FOG_RENDERDIMENSIONS);
 
     _FrameStart = SDL_GetTicks();
     _Dt = 0.0f;
-
+    _CurrState = GameState::PLAY;
     _GameState = nullptr;//new StageState; //Creates a base state for the game 
 }
 
@@ -125,6 +139,55 @@ bool Game::_ChangeState()
     return false;
 }
 
+GameObject X;
+SpriteGL* Figure = new SpriteGL(X);
+GLSL _GLColor;
+float _Time = 0;
+GLTexture _Tex;
+
+void Game::GLRun()
+{
+
+    Figure->Init(-0.5,-0.5,1,1);
+    _Tex = IO::LoadPNG(FIMG_PENGFACE);
+    _GLColor.CompileShaders("./shader/ColorShading.vert", "./shader/ColorShading.frag");
+    _GLColor.AddAttribute("VertexPosition");
+    _GLColor.AddAttribute("VertexColor");
+    _GLColor.AddAttribute("VertexUV");
+    _GLColor.LinkShaders();
+    while(!InputManager::GetInstance().QuitRequested())
+    {
+        _CalculateDt();
+        InputManager::GetInstance().Update();
+        _Time += GetDt();
+        _DrawGame();
+        SDL_Delay(Fps(30));//controls the framerate
+    }
+}
+
+void Game::_DrawGame()
+{
+    glClearDepth(1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//Clearing buffers to insert new info
+    _GLColor.Bind();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, _Tex.ID);
+    GLint TexLocation = _GLColor.GetUniformLocation("SpriteSampler");
+    glUniform1i(TexLocation, 0);
+    
+    GLint TimeLocation = _GLColor.GetUniformLocation("Time");
+    if((GLuint)TimeLocation != GL_INVALID_INDEX)
+    {
+        glUniform1f(TimeLocation, _Time);
+    }
+
+    Figure->Render();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    _GLColor.Unbind();
+    SDL_GL_SwapWindow(_GameWindow);
+}
+
 void Game::Run()
 {   
     _ChangeState();
@@ -161,8 +224,7 @@ void Game::Run()
                 StateStack.top()->RequestQuit();
             }
         }
-    } 
-    
+    }  
 }
 
 SDL_Renderer* Game::GetRenderer()

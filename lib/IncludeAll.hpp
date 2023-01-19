@@ -18,6 +18,7 @@
 #include <fstream>
 #include <iomanip>
 #include <queue>
+#include <cstddef>
 
 //SDL
 #define SDL_BASE
@@ -25,6 +26,7 @@
 #define SDL_MIXER
 #define SDL_TTF
 #include "../lib/IncludeSDL.hpp"
+#include "../glew/include/GL/glew.h"
 
 #include "../lib/xrand.hpp"
 
@@ -32,6 +34,11 @@
 #include "../lib/Vec2.hpp"
 #include "../lib/Rect.hpp"
 #include "../lib/Color.hpp"
+#include "../lib/Vertex.hpp"
+#include "../lib/GLTexture.hpp"
+#include "../lib/IO.hpp"
+#include "../lib/GLSL.hpp"
+#include "../lib/PicoPNG.hpp"
 #include "../lib/GameStats.hpp"
 #include "../lib/Settings.hpp"
 #include "../lib/Tools.hpp"
@@ -47,6 +54,7 @@
 #include "../lib/Game.hpp"
 #include "../lib/Path.hpp"
 #include "../lib/Sprite.hpp"
+#include "../lib/SpriteGL.hpp"
 #include "../lib/Resources.hpp"
 #include "../lib/TileSet.hpp"
 #include "../lib/TileMap.hpp"

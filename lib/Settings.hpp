@@ -3,9 +3,10 @@
 
 //Definitions for quick changes across all project files
 
-#define FOG_SCRTITLE "Moises Felipe Jaco Andrade de Lima - 190018364 | Fog"
-#define FOG_SCRWIDTH 1024
-#define FOG_SCRHEIGHT 600
+#define FOG_SCRTITLE "FogEngine"
+#define FOG_SCRWIDTH 1280
+#define FOG_SCRHEIGHT 720
+#define FOG_RENDERDIMENSIONS 640,360
 #define FOG_SOUNDCHANNELS 32
 //#define FOG_TILEWIDTH 64
 //#define FOG_TILEHEIGHT 64

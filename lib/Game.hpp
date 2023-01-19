@@ -3,6 +3,8 @@
 
 #include "../lib/IncludeAll.hpp"
 
+enum class GameState{PLAY, EXIT};
+
 class Game
 {
     private:
@@ -28,6 +30,7 @@ class Game
         float _Dt;
         void _CalculateDt();
 
+        GameState _CurrState;
 
     public:
         //Copy prevention
@@ -37,6 +40,11 @@ class Game
         //Mandatory
         ~Game();
         void Run();
+
+        void GLRun();
+        void _ManageInput();
+        void _DrawGame();
+
         void Push(State*);
         SDL_Renderer* GetRenderer();
         State& GetState();

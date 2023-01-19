@@ -3,7 +3,7 @@ RMDIR = rm -rdf
 RM = rm -f
 
 DEP_FLAGS = -M -MT $@ -MT $(BIN_PATH)/$(*F).o -MP -MF $@
-LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
+LIBS = -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 
 INC_PATHS = -I$(INC_PATH) $(addprefix -I,$(SDL_INC_PATH))
 
@@ -32,7 +32,7 @@ ifeq ($(OS),Windows_NT)
 RMDIR = rd /s /q
 RM = del /q
 
-SDL_PATHS = sdl
+SDL_PATHS = sdl glew 
 #SDL_PATHS = C:/SDL2-2.0.22/i686-w64-mingw32 #casa
 #DL_PATHS = C:/SDL2-2.0.5/i686-w64-mingw32 #linf
 
@@ -45,7 +45,7 @@ LINK_PATH = $(addprefix -L,$(addsuffix /lib,$(SDL_PATHS)))
 DFLAGS += -mconsole
 LIBS := -lmingw32 -lSDL2main $(LIBS)
 
-EXEC := bin/$(EXEC).exe
+EXEC := $(EXEC).exe
 
 else
 

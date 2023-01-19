@@ -38,6 +38,7 @@ class InputManager
         int _MouseUpdate[FOG_BUTTONARR];
         int _MouseX;
         int _MouseY;
+        bool _MouseMotion;
         
     public:
         //Copy prevention
@@ -55,9 +56,13 @@ class InputManager
         bool MousePress(int);
         bool MouseRelease(int);
         bool IsMouseDown(int);
+        bool MouseMotion();
         int GetMouseX();
         int GetMouseY();
         Vec2 GetMouseVec2();
+        int GetGlobalMouseX();
+        int GetGlobalMouseY();
+        Vec2 GetGlobalMouseVec2();
 
 };
 

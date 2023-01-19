@@ -40,6 +40,7 @@ InputManager::InputManager()
     _UpdateCounter = 0;
 
     //will only change based on game or SDL requests
+    this->_MouseMotion = false;
     this->_QuitRequested = false;
 
 }
@@ -53,12 +54,12 @@ InputManager::~InputManager()
     }
 }
 
-
 void InputManager::Update()
 {
     SDL_Event InputEvent;
     int KeySym;
-	SDL_GetMouseState(&_MouseX, &_MouseY);//Get mouse coordinates
+    _MouseMotion = false;
+    SDL_GetMouseState(&_MouseX, &_MouseY);//Get mouse coordinates
     _UpdateCounter++;
 
 	while(SDL_PollEvent(&InputEvent))//Returns 1 if there's an event happening
@@ -92,6 +93,10 @@ void InputManager::Update()
             case SDL_MOUSEBUTTONUP:
                 _MouseState[InputEvent.button.button] = false;
                 _MouseUpdate[InputEvent.button.button] = _UpdateCounter;
+                break;
+
+            case SDL_MOUSEMOTION:           
+                _MouseMotion = true;
                 break;
 
             default:
@@ -140,15 +145,35 @@ bool InputManager::IsMouseDown(int Switch)
 
 int InputManager::GetMouseX()
 {
-    return _MouseX + Game::GetInstance().GetState().Cam.Position.x;
+    return _MouseX + (&Game::GetInstance().GetState() != nullptr ? Game::GetInstance().GetState().Cam.Position.x : 0);
 }
 
 int InputManager::GetMouseY()
 {
-    return _MouseY + Game::GetInstance().GetState().Cam.Position.y;
+    return _MouseY + (&Game::GetInstance().GetState() != nullptr ? Game::GetInstance().GetState().Cam.Position.y : 0);
 }
 
 Vec2 InputManager::GetMouseVec2()
 {
     return Vec2(GetMouseX(), GetMouseY());
+}
+
+int InputManager::GetGlobalMouseX()
+{
+    return _MouseX;
+}
+
+int InputManager::GetGlobalMouseY()
+{
+    return _MouseY;
+}
+
+Vec2 InputManager::GetGlobalMouseVec2()
+{
+    return Vec2(GetGlobalMouseX(), GetGlobalMouseY());
+}
+
+bool InputManager::MouseMotion()
+{
+    return _MouseMotion;
 }
