@@ -12,6 +12,7 @@ sdl2-config
 
 #Folders
 /sdl
+/glew
 /garbage
 /.vscode
 

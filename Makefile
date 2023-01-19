@@ -45,7 +45,7 @@ LINK_PATH = $(addprefix -L,$(addsuffix /lib,$(SDL_PATHS)))
 DFLAGS += -mconsole
 LIBS := -lmingw32 -lSDL2main $(LIBS)
 
-EXEC := bin/$(EXEC).exe
+EXEC := $(EXEC).exe
 
 else
 
